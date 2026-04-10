@@ -5,7 +5,7 @@
 
 const Store = {
   apiUrl: window.location.origin,
-  stripeKey: 'pk_test_51QdVWAP3rrj0l7HBr3FgMLgvvyR8EcJBXoL4kI2lN8N6d5bU5wQwDaR9K0v3VxEqJpbVYHrKtPXJQJQfPGXAQhT500xYgxUYvF',
+  stripeKey: 'pk_test_51TKimHGz3LGNY9vIVoyGuFJMq093aSDzlMA2QZYmy59qYLu45EJQR0Bamiz0OejlZeEPCHZFkWH3mlTECRJNMpNo00F3EbtpJf',
   
   products: null,
   userPurchases: [],
