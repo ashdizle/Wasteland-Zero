@@ -13,8 +13,11 @@ import hashlib
 
 router = APIRouter(prefix="/api/payments", tags=["payments"])
 
-# Initialize Stripe - read from environment
-stripe.api_key = os.getenv('STRIPE_SECRET_KEY', 'STRIPE_KEY_REMOVED')
+# Initialize Stripe - read from environment (REQUIRED)
+stripe_key = os.getenv('STRIPE_SECRET_KEY')
+if not stripe_key:
+    raise ValueError('STRIPE_SECRET_KEY environment variable is required')
+stripe.api_key = stripe_key
 STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET', '')
 
 # Product catalog
