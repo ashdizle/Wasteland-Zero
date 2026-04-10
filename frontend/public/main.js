@@ -6731,7 +6731,7 @@ G.showStore = function() {
     const script = document.createElement('script');
     script.src = 'https://js.stripe.com/v3/';
     script.onload = () => {
-      window.stripe = Stripe('pk_test_51TKimHGz3LGNY9vIVoyGuFJMq093aSDzlMA2QZYmy59qYLu45EJQR0Bamiz0OejlZeEPCHZFkWH3mlTECRJNMpNo00F3EbtpJf');
+      window.stripe = Stripe('pk_live_51TKimHGz3LGNY9vIPyp45wik3GQSBGYHZvr2MtHuRK6n5yfnIoR0FDchARA1yoigv4fWOXITQUASyMWww7M7fCdw00UzT6EWXf');
       this.showStore();
     };
     document.head.appendChild(script);
@@ -6740,7 +6740,7 @@ G.showStore = function() {
   }
   
   if (!window.stripe) {
-    window.stripe = Stripe('pk_test_51TKimHGz3LGNY9vIVoyGuFJMq093aSDzlMA2QZYmy59qYLu45EJQR0Bamiz0OejlZeEPCHZFkWH3mlTECRJNMpNo00F3EbtpJf');
+    window.stripe = Stripe('pk_live_51TKimHGz3LGNY9vIPyp45wik3GQSBGYHZvr2MtHuRK6n5yfnIoR0FDchARA1yoigv4fWOXITQUASyMWww7M7fCdw00UzT6EWXf');
   }
   
   const storeHTML = `
@@ -6783,7 +6783,7 @@ G.showStore = function() {
         <div style="margin-top:12px;padding:16px;background:rgba(61,41,20,0.3);border-radius:8px;border:1px solid #5d4428">
           <p style="font-family:var(--font-mono);font-size:.75rem;color:#a8c4d4;text-align:center;line-height:1.5;margin:0">
             💳 All purchases are secure via Stripe<br>
-            🧪 <strong style="color:#f5d742">TEST MODE</strong> - Use card: 4242 4242 4242 4242<br>
+            💰 <strong style="color:#4ade80">LIVE MODE</strong> - Real payments enabled!<br>
             🚀 Support development & unlock exclusive content!
           </p>
         </div>
