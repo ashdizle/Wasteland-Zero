@@ -264,19 +264,9 @@
           <span class="ml-item"><span class="ml-icon" style="color:#665544">◌</span><span class="ml-label">Fog</span></span>
         </div>
       </div>
-      <div class="dpad-rest-group">
-        <div class="dpad">
-          <div class="dpad-row"><div class="dpad-btn" onclick="G.move(-1,0)">▲</div></div>
-          <div class="dpad-row">
-            <div class="dpad-btn" onclick="G.move(0,-1)">◀</div>
-            <div class="dpad-center" onclick="G.interactTile()">LOOK</div>
-            <div class="dpad-btn" onclick="G.move(0,1)">▶</div>
-          </div>
-          <div class="dpad-row"><div class="dpad-btn" onclick="G.move(1,0)">▼</div></div>
-        </div>
-        <div style="text-align:center;margin-top:4px;flex-shrink:0">
-          <button id="btn-field-rest" onclick="G.fieldRest()" style="font-family:var(--font-title);font-size:.7rem;padding:4px 14px;min-height:0;border:2px solid #555;background:rgba(255,255,255,.04);color:#aaa;cursor:pointer;border-radius:10px;letter-spacing:.06em">🔥 REST (20💰)</button>
-        </div>
+      <!-- REST button only (D-PAD removed - click tiles directly to move) -->
+      <div style="text-align:center;padding:8px 12px;flex-shrink:0">
+        <button id="btn-field-rest" onclick="G.fieldRest()" style="font-family:var(--font-title);font-size:.85rem;padding:10px 20px;border:2px solid var(--green);background:rgba(180,140,60,.08);color:var(--green);cursor:pointer;border-radius:10px;letter-spacing:.06em;box-shadow:0 3px 0 rgba(180,140,60,.3);width:100%;max-width:316px">🔥 REST & HEAL (20💰)</button>
       </div>
     </div>
     <div id="tab-content-inv" style="display:none;flex:1;flex-direction:column;overflow:hidden">
