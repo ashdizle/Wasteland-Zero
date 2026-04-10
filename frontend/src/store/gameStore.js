@@ -172,7 +172,8 @@ const useGameStore = create(
     }),
     
     // Map Movement
-    moveToTile: (x, y) => set(state => {
+    moveToTile: (x, y) => {
+      const state = get();
       const { currentTerritory, currentPosition, mapData, exploredTiles } = state;
       
       // Check if move is valid
@@ -180,41 +181,45 @@ const useGameStore = create(
       const dy = Math.abs(y - currentPosition.y);
       if (!((dx === 1 && dy === 0) || (dx === 0 && dy === 1))) return;
       
-      // Update position
-      state.currentPosition = { x, y };
-      
-      // Mark tile as explored (use array instead of Set)
-      const key = `${x},${y}`;
-      if (!exploredTiles[currentTerritory]) {
-        state.exploredTiles[currentTerritory] = [];
-      }
-      if (!state.exploredTiles[currentTerritory].includes(key)) {
-        state.exploredTiles[currentTerritory].push(key);
-      }
-      
-      // Update achievement progress
-      state.achievementProgress.tilesExplored++;
-      
       // Get tile data
       const tile = mapData[currentTerritory]?.[y]?.[x];
       if (!tile) return;
       
-      // Handle tile type
+      // Update position and explored tiles
+      set(s => {
+        s.currentPosition = { x, y };
+        
+        // Mark tile as explored (use array instead of Set)
+        const key = `${x},${y}`;
+        if (!s.exploredTiles[currentTerritory]) {
+          s.exploredTiles[currentTerritory] = [];
+        }
+        if (!s.exploredTiles[currentTerritory].includes(key)) {
+          s.exploredTiles[currentTerritory].push(key);
+        }
+        
+        // Update achievement progress
+        s.achievementProgress.tilesExplored++;
+      });
+      
+      audioEngine.playButtonClick();
+      
+      // Handle tile type AFTER the set() completes
       if (!tile.cleared) {
         switch (tile.type) {
           case TILE_TYPES.FIGHT:
           case TILE_TYPES.ELITE:
-            get().startCombat(tile);
+            get().startCombat(tile, x, y);
             break;
           case TILE_TYPES.BOSS:
             audioEngine.playBossAppear();
-            get().startCombat(tile);
+            get().startCombat(tile, x, y);
             break;
           case TILE_TYPES.LOOT:
             get().collectLoot(tile);
             break;
           case TILE_TYPES.TOWN:
-            state.screen = 'town';
+            set(s => { s.screen = 'town'; });
             break;
           case TILE_TYPES.DUNGEON:
             // TODO: Dungeon system
@@ -224,14 +229,15 @@ const useGameStore = create(
             break;
           case TILE_TYPES.RIFT:
             // TODO: Rift events
+            set(s => { s.mapData[currentTerritory][y][x].cleared = true; });
+            break;
+          default:
             break;
         }
       } else if (tile.type === TILE_TYPES.TOWN) {
-        state.screen = 'town';
+        set(s => { s.screen = 'town'; });
       }
-      
-      audioEngine.playButtonClick();
-    }),
+    },
     
     collectLoot: (tile) => set(state => {
       const territory = TERRITORIES[state.currentTerritory];
@@ -251,15 +257,26 @@ const useGameStore = create(
     }),
     
     // Combat System
-    startCombat: (tile) => set(state => {
+    startCombat: (tile, tileX, tileY) => set(state => {
       const territory = TERRITORIES[state.currentTerritory];
       const enemies = generateCombatEnemies(tile, territory);
+      
+      // If no enemies generated, mark tile as cleared and return
+      if (!enemies || enemies.length === 0) {
+        if (tileX !== undefined && tileY !== undefined) {
+          state.mapData[state.currentTerritory][tileY][tileX].cleared = true;
+        }
+        return;
+      }
       
       // Apply pre-combat healing from Triage skill
       if (state.unlockedSkills.includes('triage')) {
         const healAmount = Math.floor(state.maxHP * 0.12);
         state.hp = Math.min(state.maxHP, state.hp + healAmount);
       }
+      
+      // Store combat tile position for victory marking
+      state.combatTilePosition = { x: tileX, y: tileY };
       
       state.combat = {
         enemies,
