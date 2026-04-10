@@ -13,9 +13,9 @@ import hashlib
 
 router = APIRouter(prefix="/api/payments", tags=["payments"])
 
-# Initialize Stripe
-stripe.api_key = os.environ.get('STRIPE_SECRET_KEY', 'STRIPE_KEY_REMOVED')
-STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET', '')
+# Initialize Stripe - read from environment
+stripe.api_key = os.getenv('STRIPE_SECRET_KEY', 'STRIPE_KEY_REMOVED')
+STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET', '')
 
 # Product catalog
 PRODUCTS = {
