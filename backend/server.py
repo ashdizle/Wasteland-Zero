@@ -14,7 +14,7 @@ from datetime import datetime, timezone
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-from routes import payments
+from routes import payments, leaderboard, newsletter
 
 # MongoDB connection
 mongo_url = os.environ['MONGO_URL']
@@ -86,8 +86,10 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Include payment routes
+# Include all feature routes
 app.include_router(payments.router)
+app.include_router(leaderboard.router)
+app.include_router(newsletter.router)
 
 
 @app.on_event("shutdown")

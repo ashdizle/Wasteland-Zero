@@ -12,6 +12,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/style.css?v=29c">
 <link rel="stylesheet" href="/store.css">
+<link rel="stylesheet" href="/leaderboard.css">
+<link rel="stylesheet" href="/newsletter.css">
 </head>
 <body>
 <div id="app">
@@ -138,7 +140,10 @@
     <div style="display:flex;gap:8px;width:calc(100% - 24px);max-width:316px">
       <button onclick="G.showStore()" style="font-family:var(--font-title);font-size:.75rem;letter-spacing:.06em;padding:10px 14px;min-height:40px;border:2px solid #d4a44a;background:linear-gradient(180deg,rgba(212,164,74,0.15) 0%,rgba(179,136,56,0.08) 100%);color:#d4a44a;cursor:pointer;border-radius:12px;font-weight:900;text-transform:uppercase;box-shadow:0 3px 0 rgba(212,164,74,.4);flex:1">🏪 STORE</button>
       <button onclick="G.openGuide()" style="font-family:var(--font-title);font-size:.75rem;letter-spacing:.06em;padding:10px 14px;min-height:40px;border:2px solid var(--amber);background:rgba(255,224,80,.06);color:var(--amber);cursor:pointer;border-radius:12px;font-weight:900;text-transform:uppercase;box-shadow:0 3px 0 rgba(255,224,80,.4);flex:1">📖 GUIDE</button>
-      <button onclick="G.openAchievements()" style="font-family:var(--font-title);font-size:.75rem;letter-spacing:.06em;padding:10px 14px;min-height:40px;border:2px solid var(--green);background:rgba(180,140,60,.06);color:var(--green);cursor:pointer;border-radius:12px;font-weight:900;text-transform:uppercase;box-shadow:0 3px 0 rgba(180,140,60,.3);flex:1">🏆 RECORDS</button>
+    </div>
+    <div style="display:flex;gap:8px;width:calc(100% - 24px);max-width:316px;margin-top:8px">
+      <button onclick="Leaderboard.show()" style="font-family:var(--font-title);font-size:.75rem;letter-spacing:.06em;padding:10px 14px;min-height:40px;border:2px solid var(--green);background:rgba(180,140,60,.06);color:var(--green);cursor:pointer;border-radius:12px;font-weight:900;text-transform:uppercase;box-shadow:0 3px 0 rgba(180,140,60,.3);flex:1">🏆 LEADERBOARD</button>
+      <button onclick="Newsletter.show()" style="font-family:var(--font-title);font-size:.75rem;letter-spacing:.06em;padding:10px 14px;min-height:40px;border:2px solid #a8c4d4;background:rgba(168,196,212,.06);color:#a8c4d4;cursor:pointer;border-radius:12px;font-weight:900;text-transform:uppercase;box-shadow:0 3px 0 rgba(168,196,212,.3);flex:1">📬 UPDATES</button>
     </div>
   </div>
 </div>
@@ -546,12 +551,78 @@
   </div>
 </div>
 
+<!-- LEADERBOARD MODAL -->
+<div id="leaderboard-modal">
+  <div class="lb-container">
+    <div class="lb-header">
+      <div class="lb-title">🏆 LEADERBOARD</div>
+      <button class="lb-close-btn" onclick="Leaderboard.hide()">✕ CLOSE</button>
+    </div>
+    <div class="lb-tabs">
+      <button class="lb-tab active" id="lb-tab-total_xp" onclick="Leaderboard.loadLeaderboard('total_xp')">⚡ XP</button>
+      <button class="lb-tab" id="lb-tab-caps_earned" onclick="Leaderboard.loadLeaderboard('caps_earned')">💰 Caps</button>
+      <button class="lb-tab" id="lb-tab-rifts_discovered" onclick="Leaderboard.loadLeaderboard('rifts_discovered')">🌀 Rifts</button>
+      <button class="lb-tab" id="lb-tab-deepest_level" onclick="Leaderboard.loadLeaderboard('deepest_level')">📊 Level</button>
+      <button class="lb-tab" id="lb-tab-bosses_killed" onclick="Leaderboard.loadLeaderboard('bosses_killed')">💀 Bosses</button>
+    </div>
+    <div id="lb-content">
+      <div class="lb-loading">⏳ Loading leaderboard...</div>
+    </div>
+  </div>
+</div>
+
+<!-- NEWSLETTER MODAL -->
+<div id="newsletter-modal">
+  <div class="nl-container">
+    <div class="nl-icon">📬</div>
+    <div class="nl-title">STAY UPDATED</div>
+    <div class="nl-subtitle">Get notified about new content, events, and exclusive rewards!</div>
+    
+    <div class="nl-features">
+      <div class="nl-feature">
+        <span class="nl-feature-icon">🎮</span>
+        <span>New seasons and content updates</span>
+      </div>
+      <div class="nl-feature">
+        <span class="nl-feature-icon">🎁</span>
+        <span>Exclusive promo codes and rewards</span>
+      </div>
+      <div class="nl-feature">
+        <span class="nl-feature-icon">📊</span>
+        <span>Leaderboard events and competitions</span>
+      </div>
+    </div>
+    
+    <form id="nl-form" onsubmit="Newsletter.subscribe(event)">
+      <input 
+        type="email" 
+        id="nl-email-input" 
+        class="nl-input" 
+        placeholder="your.email@example.com"
+        required
+      />
+      <button type="submit" id="nl-submit-btn" class="nl-submit">📧 SUBSCRIBE</button>
+    </form>
+    
+    <div id="nl-success" class="nl-success"></div>
+    <div id="nl-error" class="nl-error"></div>
+    
+    <button class="nl-close-btn" onclick="Newsletter.hide()">Maybe Later</button>
+  </div>
+</div>
+
 </div><!-- #app -->
 
+<script>
+  // Set backend URL for API calls (must match REACT_APP_BACKEND_URL from .env)
+  window.BACKEND_URL = 'https://panel-adventure.preview.emergentagent.com';
+</script>
 <script src="/data.js?v=29a"></script>
 <script src="/audio.js?v=27b"></script>
 <script src="/npc.js?v=26i"></script>
 <script src="/store.js"></script>
+<script src="/leaderboard.js"></script>
+<script src="/newsletter.js"></script>
 <script src="/main.js?v=29d"></script>
 </body>
 </html>

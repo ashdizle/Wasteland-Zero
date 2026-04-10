@@ -1,0 +1,216 @@
+/* Leaderboard Modal Styles */
+#leaderboard-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 10000;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+#leaderboard-modal.show {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 40px;
+}
+
+.lb-container {
+  max-width: 900px;
+  width: 100%;
+  background: linear-gradient(135deg, #1a1410 0%, #2a1f18 100%);
+  border: 3px solid #d4a44a;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(212, 164, 74, 0.3);
+}
+
+.lb-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #d4a44a;
+}
+
+.lb-title {
+  font-family: 'Bangers', cursive;
+  font-size: 2rem;
+  color: #d4a44a;
+  letter-spacing: 0.1em;
+  text-shadow: 0 0 10px rgba(212, 164, 74, 0.5);
+}
+
+.lb-close-btn {
+  background: #8b4513;
+  color: #fff;
+  border: 2px solid #d4a44a;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.lb-close-btn:hover {
+  background: #d4a44a;
+  color: #1a1410;
+  transform: scale(1.05);
+}
+
+.lb-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.lb-tab {
+  flex: 1;
+  min-width: 100px;
+  background: #2a1f18;
+  color: #d4a44a;
+  border: 2px solid #d4a44a;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.lb-tab:hover {
+  background: #3a2f28;
+  transform: translateY(-2px);
+}
+
+.lb-tab.active {
+  background: #d4a44a;
+  color: #1a1410;
+  font-weight: bold;
+}
+
+.lb-table-container {
+  overflow-x: auto;
+  margin-bottom: 16px;
+}
+
+.lb-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.9rem;
+}
+
+.lb-table thead {
+  background: #d4a44a;
+  color: #1a1410;
+}
+
+.lb-table th {
+  padding: 12px 8px;
+  text-align: left;
+  font-weight: bold;
+  border-bottom: 2px solid #8b4513;
+}
+
+.lb-table th:first-child {
+  border-radius: 6px 0 0 0;
+}
+
+.lb-table th:last-child {
+  border-radius: 0 6px 0 0;
+}
+
+.lb-table tbody tr {
+  background: rgba(42, 31, 24, 0.5);
+  border-bottom: 1px solid rgba(212, 164, 74, 0.2);
+  transition: all 0.2s;
+}
+
+.lb-table tbody tr:hover {
+  background: rgba(212, 164, 74, 0.15);
+}
+
+.lb-table tbody tr.rank-1 {
+  background: linear-gradient(90deg, rgba(255, 215, 0, 0.2), rgba(42, 31, 24, 0.5));
+  font-weight: bold;
+}
+
+.lb-table tbody tr.rank-2 {
+  background: linear-gradient(90deg, rgba(192, 192, 192, 0.2), rgba(42, 31, 24, 0.5));
+}
+
+.lb-table tbody tr.rank-3 {
+  background: linear-gradient(90deg, rgba(205, 127, 50, 0.2), rgba(42, 31, 24, 0.5));
+}
+
+.lb-table td {
+  padding: 12px 8px;
+  color: #e8e8e8;
+}
+
+.lb-rank {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.lb-rank.gold { color: #ffd700; }
+.lb-rank.silver { color: #c0c0c0; }
+.lb-rank.bronze { color: #cd7f32; }
+
+.lb-player-name {
+  font-weight: bold;
+  color: #d4a44a;
+}
+
+.lb-loading {
+  text-align: center;
+  padding: 40px;
+  color: #d4a44a;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1.2rem;
+}
+
+.lb-error {
+  text-align: center;
+  padding: 40px;
+  color: #ff6b6b;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+.lb-empty {
+  text-align: center;
+  padding: 40px;
+  color: #a8c4d4;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .lb-title {
+    font-size: 1.5rem;
+  }
+  
+  .lb-tabs {
+    flex-direction: column;
+  }
+  
+  .lb-tab {
+    flex: none;
+  }
+  
+  .lb-table {
+    font-size: 0.75rem;
+  }
+  
+  .lb-table th,
+  .lb-table td {
+    padding: 8px 4px;
+  }
+}
