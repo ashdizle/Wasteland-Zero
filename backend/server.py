@@ -9,6 +9,7 @@ from pydantic import BaseModel, Field, ConfigDict
 from typing import List
 import uuid
 from datetime import datetime, timezone
+from routes import payments
 
 
 ROOT_DIR = Path(__file__).parent
@@ -83,6 +84,10 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+
+# Include payment routes
+app.include_router(payments.router)
+
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
