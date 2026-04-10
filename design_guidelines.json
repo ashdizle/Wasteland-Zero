@@ -1,0 +1,105 @@
+{
+  "project_name": "Wasteland Zero",
+  "app_type": "mobile_web_app",
+  "theme": "DARK",
+  "archetype": "Custom Wasteland Retro-Futurism (High-Contrast Comic + Earthy Amber Terminal)",
+  "global_rules": [
+    "Mobile-first constraint: max-width 400px centered on screen for desktop.",
+    "Comic-book aesthetic: thick borders (2px-4px solid), heavy shadows (hard offset dropshadows), angular panels.",
+    "Terminal vibe: Scanline overlays, glowing amber monospace text for stats.",
+    "All interactive elements MUST have data-testid attributes."
+  ],
+  "typography": {
+    "fonts": {
+      "heading": "Bebas Neue",
+      "body": "Outfit",
+      "mono": "VT323"
+    },
+    "hierarchy": {
+      "h1": "font-comic text-4xl tracking-wide uppercase text-amber-500",
+      "h2": "font-comic text-3xl tracking-wide uppercase text-amber-500",
+      "h3": "font-comic text-2xl tracking-wide uppercase text-amber-500",
+      "body": "font-body text-base text-amber-50/80 leading-relaxed",
+      "stats": "font-mono text-lg uppercase text-amber-500 tracking-widest",
+      "small_label": "font-mono text-xs uppercase text-amber-500/70 tracking-[0.2em]"
+    }
+  },
+  "colors": {
+    "background": {
+      "primary": "#0A0806",
+      "secondary": "#1A130F",
+      "tertiary": "#2A1D14"
+    },
+    "border": {
+      "default": "#F59E0B",
+      "subtle": "rgba(245, 158, 11, 0.3)",
+      "dark": "#4A3320"
+    },
+    "text": {
+      "primary": "#F59E0B",
+      "glow": "rgba(245, 158, 11, 0.8)",
+      "white": "#FAFAFA",
+      "muted": "rgba(245, 158, 11, 0.6)"
+    },
+    "accent": {
+      "danger": "#DC2626",
+      "toxic": "#65A30D",
+      "ap_blue": "#3B82F6"
+    },
+    "loot_tiers": {
+      "common": "text-gray-400 border-gray-400",
+      "uncommon": "text-lime-500 border-lime-500",
+      "rare": "text-blue-500 border-blue-500",
+      "epic": "text-purple-500 border-purple-500",
+      "legendary": "text-amber-500 border-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)]",
+      "celestial": "text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-yellow-500 to-purple-500 border-pink-500 animate-pulse font-bold"
+    }
+  },
+  "components": {
+    "container": "w-full max-w-[400px] mx-auto min-h-screen bg-[#0A0806] text-[#F59E0B] relative overflow-x-hidden font-body border-x border-[#F59E0B]/20",
+    "button": "font-comic text-xl uppercase px-4 py-2 border-2 border-[#F59E0B] bg-[#1A130F] text-[#F59E0B] shadow-[4px_4px_0px_#F59E0B] hover:bg-[#F59E0B] hover:text-[#0A0806] active:translate-y-1 active:translate-x-1 active:shadow-none transition-all",
+    "card_comic": "bg-[#1A130F] border-2 border-[#F59E0B] shadow-[4px_4px_0px_#F59E0B] p-4 relative",
+    "terminal_screen": "bg-[#0A0806] border border-[#F59E0B]/50 p-4 relative overflow-hidden font-mono",
+    "dialogue_bubble": "bg-[#FAFAFA] text-[#0A0806] border-2 border-[#0A0806] rounded-xl rounded-bl-none p-3 font-body shadow-[4px_4px_0px_#F59E0B] text-sm",
+    "fog_of_war_cell": "w-full aspect-square border border-[#F59E0B]/20 bg-[#0A0806] flex items-center justify-center transition-colors hover:bg-[#1A130F]",
+    "fog_of_war_cell_unexplored": "w-full aspect-square bg-[#0A0806] border border-[#1A130F] bg-[repeating-linear-gradient(45deg,transparent,transparent_2px,#1A130F_2px,#1A130F_4px)]",
+    "health_bar": "h-4 w-full bg-[#1A130F] border border-[#F59E0B] overflow-hidden",
+    "health_fill": "h-full bg-[#DC2626] transition-all duration-300",
+    "ap_bar": "h-4 w-full bg-[#1A130F] border border-[#F59E0B] overflow-hidden",
+    "ap_fill": "h-full bg-[#3B82F6] transition-all duration-300"
+  },
+  "visual_effects": {
+    "scanlines": "pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,transparent_50%,rgba(0,0,0,0.3)_50%)] bg-[length:100%_4px] z-[100] mix-blend-overlay",
+    "vignette": "pointer-events-none absolute inset-0 shadow-[inset_0_0_50px_rgba(0,0,0,0.9)] z-[90]",
+    "halftone_bg": "bg-[radial-gradient(circle,#F59E0B_1px,transparent_1px)] bg-[length:8px_8px] opacity-10"
+  },
+  "media": {
+    "images": [
+      {
+        "category": "hero_background",
+        "url": "https://images.unsplash.com/photo-1765578539072-7c074ddb5ef3?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1ODh8MHwxfHNlYXJjaHwxfHxwb3N0JTIwYXBvY2FseXB0aWMlMjB3YXN0ZWxhbmR8ZW58MHx8fHwxNzc1ODE5MDA4fDA&ixlib=rb-4.1.0&q=85",
+        "description": "Desolate wasteland, foggy atmosphere. Ideal for title screen."
+      },
+      {
+        "category": "character_portrait",
+        "url": "https://images.unsplash.com/photo-1743247299142-76ba40201c5d?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMjd8MHwxfHNlYXJjaHwyfHxzdXJ2aXZhbCUyMGdhbWUlMjBwb3J0cmFpdCUyMGNoYXJhY3RlcnxlbnwwfHx8fDE3NzU4MTkwMDh8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Stylized bust of a survivor, use for character UI or dialog."
+      },
+      {
+        "category": "boss_shadow",
+        "url": "https://images.unsplash.com/photo-1642611139551-65dcc964eb42?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNTl8MHwxfHNlYXJjaHwxfHxzY2FyeSUyMG11dGFudCUyMHNoYWRvdyUyMGRhcmtuZXNzfGVufDB8fHx8MTc3NTgxOTAwOHww&ixlib=rb-4.1.0&q=85",
+        "description": "Scary dark silhouette for encounters."
+      }
+    ]
+  },
+  "instructions_to_main_agent": {
+    "setup": "Install fonts from Google Fonts: Bebas Neue, VT323, Outfit. Use @phosphor-icons/react for UI icons.",
+    "layout_enforcement": "Wrap the main router/app in <div className='w-full min-h-screen bg-black flex justify-center'><div className='w-full max-w-[400px] h-screen overflow-y-auto bg-[#0A0806] relative shadow-[0_0_50px_rgba(245,158,11,0.1)]'>...</div></div> to strictly enforce the mobile portrait constraint on all devices.",
+    "component_usage": "DO NOT rely on Vercel-like soft cards. Use pure HTML/Tailwind with 'card_comic' definitions for hard borders, harsh shadows, and flat backgrounds.",
+    "data_testids": "Ensure EVERY button, link, and interactive grid cell includes a descriptive data-testid attribute.",
+    "vats_targeting": "For V.A.T.S, overlay the screen with monospace terminal data. Use [ ] brackets around target zones with click handlers.",
+    "fog_of_war": "Construct the 7x7 grid using CSS Grid (grid-cols-7). Use 'fog_of_war_cell_unexplored' styling for hidden zones, and 'fog_of_war_cell' for explored ones. Overlay the player icon on the active cell.",
+    "loot_shimmer": "For Celestial loot tier, leverage background-clip: text with an animated linear gradient to produce the requested rainbow shimmer effect.",
+    "terminal_fx": "Include a fixed div overlay with the 'scanlines' effect class set to pointer-events-none over the main 400px container for persistent PIP-Boy atmosphere."
+  }
+}
