@@ -4993,8 +4993,8 @@ const G = {
     if (s.lv >= 100) return; // hard cap at level 100
     s.lv++;
     s.xp -= s.xpNext;
-    // Linear XP curve: each level costs 200 + level×50 XP (much slower than exponential)
-    s.xpNext = 200 + s.lv * 50;
+    // Slower XP curve: each level costs 300 + level×80 XP (increased from 200 + level×50)
+    s.xpNext = 300 + s.lv * 80;
     s.maxHp += 12; s.hp = Math.min(s.maxHp, s.hp + 12);
     s.str++; s.agi++; s.int++; s.end++; s.lck++;
     s.skillPoints = (s.skillPoints || 0) + 1;
