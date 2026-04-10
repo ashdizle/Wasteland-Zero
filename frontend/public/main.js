@@ -6726,25 +6726,51 @@ document.addEventListener('DOMContentLoaded', () => {
 // ═══════════════════════════════════════════════════════════════
 
 G.showStore = function() {
-  if (typeof Store === 'undefined' || !Store.products) {
-    this.toast('🏪 Store loading...', 2000);
-    setTimeout(() => this.showStore(), 1000);
-    return;
-  }
-  
+  // Simple store without backend dependency for now
   const storeHTML = `
-    <div id="store-screen" class="screen" style="display:flex;flex-direction:column;overflow-y:auto;padding:20px 12px">
+    <div id="store-screen" class="screen" style="display:flex;flex-direction:column;overflow-y:auto;padding:20px 12px;background:linear-gradient(180deg,#1a1410 0%,#0f0a06 100%);min-height:100vh">
       <button style="position:absolute;top:12px;left:12px;font-family:var(--font-title);font-size:.9rem;padding:8px 16px;background:linear-gradient(180deg,#5d4428 0%,#3d2914 100%);border:2px solid #7a6a4a;border-radius:6px;color:#d4a44a;cursor:pointer;z-index:100;letter-spacing:.05em" onclick="G.closeStore()">← BACK</button>
       
       <h2 style="font-family:var(--font-title);font-size:2rem;color:#d4a44a;text-align:center;margin:40px 0 24px;letter-spacing:.08em;text-shadow:2px 2px 0 #000,0 0 10px rgba(212,164,74,0.5)">🏪 PREMIUM STORE</h2>
       
-      ${Store.renderStore()}
-      
-      <div style="margin-top:24px;padding:16px;background:rgba(61,41,20,0.3);border-radius:8px;border:1px solid #5d4428">
-        <p style="font-family:var(--font-mono);font-size:.75rem;color:#a8c4d4;text-align:center;line-height:1.5;margin:0">
-          All purchases are secure via Stripe.<br>
-          Support development & unlock exclusive content!
-        </p>
+      <div style="display:flex;flex-direction:column;gap:24px">
+        <!-- Premium Category -->
+        <div>
+          <h3 style="font-family:var(--font-title);font-size:1.3rem;color:#f5a442;margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid rgba(245,164,66,0.3);letter-spacing:.05em">💎 Premium</h3>
+          <div style="background:linear-gradient(145deg,rgba(76,29,149,0.2) 0%,rgba(30,27,75,0.3) 100%);border:2px solid #d4a44a;border-radius:8px;padding:16px">
+            <h4 style="font-family:var(--font-mono);font-size:1rem;color:#f5d742;margin:0 0 8px">Wasteland Zero Premium</h4>
+            <p style="font-family:var(--font-mono);font-size:.8rem;color:#a8c4d4;line-height:1.4;margin:0 0 12px">Remove branding, exclusive title screen, priority support</p>
+            <button onclick="alert('Visit https://stripe.com to set up payments!')" style="font-family:var(--font-title);font-size:1.1rem;width:100%;padding:10px;background:linear-gradient(180deg,#d4a44a 0%,#b38838 100%);border:2px solid #f5d742;border-radius:6px;color:#1a1410;text-shadow:1px 1px 0 rgba(255,255,255,0.3);box-shadow:0 3px 0 #8b6b2c;cursor:pointer;letter-spacing:.05em">$4.99</button>
+          </div>
+        </div>
+        
+        <!-- Boosts Category -->
+        <div>
+          <h3 style="font-family:var(--font-title);font-size:1.3rem;color:#f5a442;margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid rgba(245,164,66,0.3);letter-spacing:.05em">⚡ Boosts</h3>
+          
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="background:linear-gradient(145deg,rgba(76,29,149,0.2) 0%,rgba(30,27,75,0.3) 100%);border:2px solid rgba(167,139,250,0.4);border-radius:8px;padding:14px">
+              <h4 style="font-family:var(--font-mono);font-size:1rem;color:#f5d742;margin:0 0 6px">24h XP Boost</h4>
+              <p style="font-family:var(--font-mono);font-size:.8rem;color:#a8c4d4;line-height:1.4;margin:0 0 10px">+50% XP gain for 24 hours</p>
+              <button onclick="alert('Visit https://stripe.com to set up payments!')" style="font-family:var(--font-title);font-size:1.1rem;width:100%;padding:10px;background:linear-gradient(180deg,#d4a44a 0%,#b38838 100%);border:2px solid #f5d742;border-radius:6px;color:#1a1410;cursor:pointer">$0.99</button>
+            </div>
+            
+            <div style="background:linear-gradient(145deg,rgba(76,29,149,0.2) 0%,rgba(30,27,75,0.3) 100%);border:2px solid rgba(167,139,250,0.4);border-radius:8px;padding:14px">
+              <h4 style="font-family:var(--font-mono);font-size:1rem;color:#f5d742;margin:0 0 6px">Mega Boost Bundle</h4>
+              <p style="font-family:var(--font-mono);font-size:.8rem;color:#a8c4d4;line-height:1.4;margin:0 0 10px">All 3 boosts (XP, Loot, Caps) for 24h - Save 33%!</p>
+              <button onclick="alert('Visit https://stripe.com to set up payments!')" style="font-family:var(--font-title);font-size:1.1rem;width:100%;padding:10px;background:linear-gradient(180deg,#d4a44a 0%,#b38838 100%);border:2px solid #f5d742;border-radius:6px;color:#1a1410;cursor:pointer">$1.99</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Info -->
+        <div style="margin-top:12px;padding:16px;background:rgba(61,41,20,0.3);border-radius:8px;border:1px solid #5d4428">
+          <p style="font-family:var(--font-mono);font-size:.75rem;color:#a8c4d4;text-align:center;line-height:1.5;margin:0">
+            💳 All purchases are secure via Stripe<br>
+            🚀 Support development & unlock exclusive content!<br><br>
+            <strong style="color:#f5d742">Coming Soon!</strong> Set up your Stripe account to enable real payments.
+          </p>
+        </div>
       </div>
     </div>
   `;
@@ -6752,7 +6778,7 @@ G.showStore = function() {
   document.getElementById('app').insertAdjacentHTML('beforeend', storeHTML);
   this.hideAllScreens();
   document.getElementById('store-screen').style.display = 'flex';
-  AudioEngine.sfx.click && AudioEngine.sfx.click();
+  if (AudioEngine && AudioEngine.sfx && AudioEngine.sfx.click) AudioEngine.sfx.click();
 };
 
 G.closeStore = function() {
