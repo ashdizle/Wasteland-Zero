@@ -294,11 +294,10 @@ const useGameStore = create(
       state.screen = 'combat';
     }),
     
-    performAttack: (targetIndex = 0) => set(state => {
+    performAttack: (targetIndex = 0) => {
+      const state = get();
       if (!state.combat || state.combat.turn !== 'player') return;
       if (state.combat.ap < 2) return;
-      
-      state.combat.ap -= 2;
       
       const enemy = state.combat.enemies[targetIndex];
       if (!enemy || enemy.currentHP <= 0) return;
@@ -310,77 +309,83 @@ const useGameStore = create(
         state.bonuses
       );
       
-      if (attackResult.isMiss) {
-        state.combatLog.push('You missed!');
-        audioEngine.playMiss();
-        return;
-      }
-      
-      if (attackResult.dodged) {
-        state.combatLog.push(`${enemy.name} dodged your attack!`);
-        audioEngine.playMiss();
-        return;
-      }
-      
-      // Calculate damage
-      const baseDamage = weapon ? rollDamage(weapon.damage[0], weapon.damage[1]) : rollDamage(3, 8);
-      const damage = calculateDamage(baseDamage, { ...state, weaponType: weapon?.weaponType || 'melee' }, enemy, attackResult.isCrit, state.bonuses);
-      
-      // Track max damage
-      if (damage > state.achievementProgress.maxDamage) {
-        state.achievementProgress.maxDamage = damage;
-      }
-      
-      // Apply damage
-      enemy.currentHP = Math.max(0, enemy.currentHP - damage);
-      
-      // Add floating damage
-      state.floatingDamage.push({
-        id: Date.now(),
-        damage,
-        isCrit: attackResult.isCrit,
-        targetIndex
+      set(s => {
+        s.combat.ap -= 2;
+        
+        const targetEnemy = s.combat.enemies[targetIndex];
+        
+        if (attackResult.isMiss) {
+          s.combatLog.push('You missed!');
+          audioEngine.playMiss();
+          return;
+        }
+        
+        if (attackResult.dodged) {
+          s.combatLog.push(`${targetEnemy.name} dodged your attack!`);
+          audioEngine.playMiss();
+          return;
+        }
+        
+        // Calculate damage
+        const baseDamage = weapon ? rollDamage(weapon.damage[0], weapon.damage[1]) : rollDamage(3, 8);
+        const damage = calculateDamage(baseDamage, { ...s, weaponType: weapon?.weaponType || 'melee' }, targetEnemy, attackResult.isCrit, s.bonuses);
+        
+        // Track max damage
+        if (damage > s.achievementProgress.maxDamage) {
+          s.achievementProgress.maxDamage = damage;
+        }
+        
+        // Apply damage
+        targetEnemy.currentHP = Math.max(0, targetEnemy.currentHP - damage);
+        
+        // Add floating damage
+        s.floatingDamage.push({
+          id: Date.now(),
+          damage,
+          isCrit: attackResult.isCrit,
+          targetIndex
+        });
+        
+        if (attackResult.isCrit) {
+          s.combatLog.push(`CRITICAL HIT! You deal ${damage} damage to ${targetEnemy.name}!`);
+          s.achievementProgress.criticalHits++;
+          audioEngine.playCrit();
+        } else {
+          s.combatLog.push(`You deal ${damage} damage to ${targetEnemy.name}.`);
+          audioEngine.playHit();
+        }
+        
+        // Lifesteal
+        if (s.bonuses.lifesteal) {
+          const healAmount = Math.floor(damage * s.bonuses.lifesteal);
+          s.hp = Math.min(s.maxHP, s.hp + healAmount);
+          s.combatLog.push(`You heal ${healAmount} HP from lifesteal.`);
+        }
+        
+        // Apply status effects from weapon
+        if (weapon?.element === 'bleed' && weapon.bleedChance && Math.random() < weapon.bleedChance) {
+          targetEnemy.statusEffects.push({ type: 'bleed', stacks: 1, duration: 3 });
+          s.combatLog.push(`${targetEnemy.name} is bleeding!`);
+        }
+        if (weapon?.element === 'fire' && weapon.burnChance && Math.random() < weapon.burnChance) {
+          targetEnemy.statusEffects.push({ type: 'burn', stacks: 1, duration: 3 });
+          s.combatLog.push(`${targetEnemy.name} is burning!`);
+        }
+        
+        // Check if enemy died
+        if (targetEnemy.currentHP <= 0) {
+          s.combatLog.push(`${targetEnemy.name} has been defeated!`);
+          s.achievementProgress.kills++;
+          audioEngine.playDeath();
+        }
       });
       
-      if (attackResult.isCrit) {
-        state.combatLog.push(`CRITICAL HIT! You deal ${damage} damage to ${enemy.name}!`);
-        state.achievementProgress.criticalHits++;
-        audioEngine.playCrit();
-      } else {
-        state.combatLog.push(`You deal ${damage} damage to ${enemy.name}.`);
-        audioEngine.playHit();
+      // Check victory AFTER set completes
+      const newState = get();
+      if (newState.combat?.enemies.every(e => e.currentHP <= 0)) {
+        setTimeout(() => get().endCombat(true), 300);
       }
-      
-      // Lifesteal
-      if (state.bonuses.lifesteal) {
-        const healAmount = Math.floor(damage * state.bonuses.lifesteal);
-        state.hp = Math.min(state.maxHP, state.hp + healAmount);
-        state.combatLog.push(`You heal ${healAmount} HP from lifesteal.`);
-      }
-      
-      // Apply status effects from weapon
-      if (weapon?.element === 'bleed' && weapon.bleedChance && Math.random() < weapon.bleedChance) {
-        enemy.statusEffects.push({ type: 'bleed', stacks: 1, duration: 3 });
-        state.combatLog.push(`${enemy.name} is bleeding!`);
-      }
-      if (weapon?.element === 'fire' && weapon.burnChance && Math.random() < weapon.burnChance) {
-        enemy.statusEffects.push({ type: 'burn', stacks: 1, duration: 3 });
-        state.combatLog.push(`${enemy.name} is burning!`);
-      }
-      
-      // Check if enemy died
-      if (enemy.currentHP <= 0) {
-        state.combatLog.push(`${enemy.name} has been defeated!`);
-        state.achievementProgress.kills++;
-        audioEngine.playDeath();
-        
-        // Check if combat is over
-        const allDead = state.combat.enemies.every(e => e.currentHP <= 0);
-        if (allDead) {
-          get().endCombat(true);
-        }
-      }
-    }),
+    },
     
     performBrace: () => set(state => {
       if (!state.combat || state.combat.turn !== 'player') return;
@@ -545,118 +550,128 @@ const useGameStore = create(
       setTimeout(() => get().processEnemyTurn(), 500);
     }),
     
-    processEnemyTurn: () => set(state => {
+    processEnemyTurn: () => {
+      const state = get();
       if (!state.combat || state.combat.turn !== 'enemy') return;
       
-      const livingEnemies = state.combat.enemies.filter(e => e.currentHP > 0);
-      
-      livingEnemies.forEach(enemy => {
-        // Check if healer should heal
-        if (enemy.isHealer && enemy.healsRemaining > 0) {
-          const woundedAlly = state.combat.enemies.find(
-            e => e.currentHP > 0 && e.currentHP / e.maxHP < enemy.healThreshold
-          );
-          if (woundedAlly) {
-            const healAmount = rollDamage(enemy.healAmount[0], enemy.healAmount[1]);
-            const finalHeal = Math.floor(healAmount * (1 - (state.bonuses.antiHeal || 0) * 0.7));
-            woundedAlly.currentHP = Math.min(woundedAlly.maxHP, woundedAlly.currentHP + finalHeal);
-            enemy.healsRemaining--;
-            state.combatLog.push(`${enemy.name} heals ${woundedAlly.name} for ${finalHeal} HP!`);
+      // Update state
+      set(s => {
+        const livingEnemies = s.combat.enemies.filter(e => e.currentHP > 0);
+        
+        livingEnemies.forEach(enemy => {
+          // Check if healer should heal
+          if (enemy.isHealer && enemy.healsRemaining > 0) {
+            const woundedAlly = s.combat.enemies.find(
+              e => e.currentHP > 0 && e.currentHP / e.maxHP < enemy.healThreshold
+            );
+            if (woundedAlly) {
+              const healAmount = rollDamage(enemy.healAmount[0], enemy.healAmount[1]);
+              const finalHeal = Math.floor(healAmount * (1 - (s.bonuses.antiHeal || 0) * 0.7));
+              woundedAlly.currentHP = Math.min(woundedAlly.maxHP, woundedAlly.currentHP + finalHeal);
+              enemy.healsRemaining--;
+              s.combatLog.push(`${enemy.name} heals ${woundedAlly.name} for ${finalHeal} HP!`);
+              audioEngine.playHeal();
+              return;
+            }
+          }
+          
+          // Regular attack
+          const baseDamage = rollDamage(enemy.scaledDamage[0], enemy.scaledDamage[1]);
+          let damage = baseDamage;
+          
+          // Check for brace
+          const braceEffect = s.combat.playerBuffs.find(b => b.type === 'brace');
+          if (braceEffect) {
+            damage = Math.floor(damage * (1 - braceEffect.value));
+          }
+          
+          // Apply damage reduction
+          if (s.bonuses.damageReduction) {
+            damage = Math.floor(damage * (1 - s.bonuses.damageReduction));
+          }
+          
+          // Apply defense
+          const totalDefense = Object.values(s.equipment)
+            .filter(e => e?.defense)
+            .reduce((sum, e) => sum + e.defense, 0);
+          damage = Math.max(1, damage - Math.floor(totalDefense * 0.5));
+          
+          s.hp = Math.max(0, s.hp - damage);
+          s.combatLog.push(`${enemy.name} attacks you for ${damage} damage!`);
+          audioEngine.playHit();
+          
+          // Brace counter
+          if (braceEffect && s.unlockedSkills.includes('braceCounter') && s.equipment.weapon) {
+            const counterDamage = Math.floor(rollDamage(s.equipment.weapon.damage[0], s.equipment.weapon.damage[1]) * 0.5);
+            enemy.currentHP = Math.max(0, enemy.currentHP - counterDamage);
+            s.combatLog.push(`Counter-attack! ${enemy.name} takes ${counterDamage} damage!`);
+          }
+        });
+        
+        // Check player death
+        if (s.hp <= 0) {
+          // Check for Phoenix Protocol or auto-revive
+          if (s.unlockedSkills.includes('phoenixProtocol') && !s.combat.phoenixUsed) {
+            s.hp = Math.floor(s.maxHP * 0.4);
+            s.combat.phoenixUsed = true;
+            s.combatLog.push('Phoenix Protocol activated! You revive with 40% HP!');
             audioEngine.playHeal();
-            return;
+          } else if (s.bonuses.autoRevive && !s.combat.reviveUsed) {
+            s.hp = Math.floor(s.maxHP * s.bonuses.autoRevive);
+            s.combat.reviveUsed = true;
+            s.combatLog.push(`You revive with ${Math.floor(s.bonuses.autoRevive * 100)}% HP!`);
+            audioEngine.playHeal();
           }
         }
         
-        // Regular attack
-        const baseDamage = rollDamage(enemy.scaledDamage[0], enemy.scaledDamage[1]);
-        let damage = baseDamage;
-        
-        // Check for brace
-        const braceEffect = state.combat.playerBuffs.find(b => b.type === 'brace');
-        if (braceEffect) {
-          damage = Math.floor(damage * (1 - braceEffect.value));
-        }
-        
-        // Apply damage reduction
-        if (state.bonuses.damageReduction) {
-          damage = Math.floor(damage * (1 - state.bonuses.damageReduction));
-        }
-        
-        // Apply defense
-        const totalDefense = Object.values(state.equipment)
-          .filter(e => e?.defense)
-          .reduce((sum, e) => sum + e.defense, 0);
-        damage = Math.max(1, damage - Math.floor(totalDefense * 0.5));
-        
-        state.hp = Math.max(0, state.hp - damage);
-        state.combatLog.push(`${enemy.name} attacks you for ${damage} damage!`);
-        audioEngine.playHit();
-        
-        // Brace counter
-        if (braceEffect && state.unlockedSkills.includes('braceCounter') && state.equipment.weapon) {
-          const counterDamage = Math.floor(rollDamage(state.equipment.weapon.damage[0], state.equipment.weapon.damage[1]) * 0.5);
-          enemy.currentHP = Math.max(0, enemy.currentHP - counterDamage);
-          state.combatLog.push(`Counter-attack! ${enemy.name} takes ${counterDamage} damage!`);
-        }
-      });
-      
-      // Check player death
-      if (state.hp <= 0) {
-        // Check for Phoenix Protocol or auto-revive
-        if (state.unlockedSkills.includes('phoenixProtocol') && !state.combat.phoenixUsed) {
-          state.hp = Math.floor(state.maxHP * 0.4);
-          state.combat.phoenixUsed = true;
-          state.combatLog.push('Phoenix Protocol activated! You revive with 40% HP!');
-          audioEngine.playHeal();
-        } else if (state.bonuses.autoRevive && !state.combat.reviveUsed) {
-          state.hp = Math.floor(state.maxHP * state.bonuses.autoRevive);
-          state.combat.reviveUsed = true;
-          state.combatLog.push(`You revive with ${Math.floor(state.bonuses.autoRevive * 100)}% HP!`);
-          audioEngine.playHeal();
-        } else {
-          get().endCombat(false);
-          return;
-        }
-      }
-      
-      // Process status effects on enemies
-      state.combat.enemies.forEach(enemy => {
-        if (enemy.currentHP <= 0) return;
-        
-        enemy.statusEffects.forEach(effect => {
-          const tickDamage = calculateStatusDamage(effect.type, effect.stacks);
-          enemy.currentHP = Math.max(0, enemy.currentHP - tickDamage);
-          state.combatLog.push(`${enemy.name} takes ${tickDamage} ${effect.type} damage.`);
-          effect.duration--;
+        // Process status effects on enemies
+        s.combat.enemies.forEach(enemy => {
+          if (enemy.currentHP <= 0) return;
+          
+          enemy.statusEffects.forEach(effect => {
+            const tickDamage = calculateStatusDamage(effect.type, effect.stacks);
+            enemy.currentHP = Math.max(0, enemy.currentHP - tickDamage);
+            s.combatLog.push(`${enemy.name} takes ${tickDamage} ${effect.type} damage.`);
+            effect.duration--;
+          });
+          
+          // Remove expired effects
+          enemy.statusEffects = enemy.statusEffects.filter(e => e.duration > 0);
         });
         
-        // Remove expired effects
-        enemy.statusEffects = enemy.statusEffects.filter(e => e.duration > 0);
+        // Regen field
+        if (s.unlockedSkills.includes('regenField')) {
+          const regenAmount = 3;
+          s.hp = Math.min(s.maxHP, s.hp + regenAmount);
+          s.combatLog.push(`Regen Field heals you for ${regenAmount} HP.`);
+        }
+        
+        // Decrement buff durations
+        s.combat.playerBuffs.forEach(buff => buff.duration--);
+        s.combat.playerBuffs = s.combat.playerBuffs.filter(b => b.duration > 0);
+        
+        // Next round setup (will check for victory/death after)
+        s.combat.round++;
+        s.combat.turn = 'player';
+        s.combat.ap = s.maxAP;
+        s.combatLog.push(`--- Round ${s.combat.round} ---`);
       });
       
-      // Regen field
-      if (state.unlockedSkills.includes('regenField')) {
-        const regenAmount = 3;
-        state.hp = Math.min(state.maxHP, state.hp + regenAmount);
-        state.combatLog.push(`Regen Field heals you for ${regenAmount} HP.`);
-      }
+      // Check outcomes AFTER the set completes
+      const newState = get();
       
-      // Decrement buff durations
-      state.combat.playerBuffs.forEach(buff => buff.duration--);
-      state.combat.playerBuffs = state.combat.playerBuffs.filter(b => b.duration > 0);
-      
-      // Check if all enemies dead
-      if (state.combat.enemies.every(e => e.currentHP <= 0)) {
-        get().endCombat(true);
+      // Player died
+      if (newState.hp <= 0 && !newState.combat?.phoenixUsed && !newState.combat?.reviveUsed) {
+        get().endCombat(false);
         return;
       }
       
-      // Next round
-      state.combat.round++;
-      state.combat.turn = 'player';
-      state.combat.ap = state.maxAP;
-      state.combatLog.push(`--- Round ${state.combat.round} ---`);
-    }),
+      // All enemies dead
+      if (newState.combat?.enemies.every(e => e.currentHP <= 0)) {
+        get().endCombat(true);
+        return;
+      }
+    },
     
     endCombat: (victory) => set(state => {
       if (victory) {
