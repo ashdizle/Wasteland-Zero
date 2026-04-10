@@ -8,6 +8,7 @@ import { SKILL_TREE } from '../data/skills';
 import { PERK_LIST } from '../data/perks';
 import { TERRITORIES } from '../data/territories';
 import { ENEMIES } from '../data/enemies';
+import { getRandomRift } from '../data/rifts';
 import { calculateMaxHP, xpForLevel, rollDamage, performAttackRoll, calculateDamage, calculateStatusDamage, shuffleArray } from '../utils/combat';
 import { generateTerritoryMap, generateCombatEnemies, TILE_TYPES } from '../utils/map';
 import { generateLoot, generateCapsDrop, generateShopInventory } from '../utils/loot';
@@ -20,11 +21,12 @@ const useGameStore = create(
     ...createInitialState(),
     
     // UI State
-    screen: 'title', // title, saves, newGame, map, combat, inventory, skills, shop, levelUp
+    screen: 'title', // title, saves, newGame, map, combat, inventory, skills, shop, levelUp, rift
     pendingLevelUp: false,
     levelUpPerks: [],
     combatLog: [],
     floatingDamage: [],
+    currentRift: null,
     
     // Actions
     setScreen: (screen) => set(state => { state.screen = screen; }),
@@ -228,8 +230,15 @@ const useGameStore = create(
             // TODO: NPC dialogue
             break;
           case TILE_TYPES.RIFT:
-            // TODO: Rift events
-            set(s => { s.mapData[currentTerritory][y][x].cleared = true; });
+            // Rift encounter
+            const riftEncounter = getRandomRift();
+            set(s => {
+              s.currentRift = {
+                encounter: riftEncounter,
+                tilePos: { x, y }
+              };
+              s.screen = 'rift';
+            });
             break;
           default:
             break;
@@ -910,7 +919,100 @@ const useGameStore = create(
         state[key] = initial[key];
       });
       state.screen = 'title';
-    })
+    }),
+    
+    // ===== RIFT SYSTEM =====
+    selectRiftOption: (option, rollResult) => {
+      const state = get();
+      const { currentRift, currentTerritory } = state;
+      
+      if (!currentRift || !rollResult) return;
+
+      const { encounter, tilePos } = currentRift;
+      
+      set(s => {
+        // Pay HP cost
+        s.hp = Math.max(0, s.hp - encounter.hpCost);
+        
+        if (rollResult.success) {
+          // Success rewards
+          const reward = option.successReward;
+          
+          if (reward.caps) s.caps += reward.caps;
+          if (reward.xp) s.xp += reward.xp;
+          if (reward.hpHeal) s.hp = Math.min(s.maxHP, s.hp + reward.hpHeal);
+          
+          // Item rewards
+          if (reward.item) {
+            const territory = TERRITORIES[currentTerritory];
+            let item;
+            
+            if (reward.item === 'random') {
+              item = generateLoot('common', s.stats.LCK / 10);
+            } else if (reward.item === 'rare') {
+              item = generateLoot('rare', s.stats.LCK / 10);
+            } else if (reward.item === 'epic') {
+              item = generateLoot('epic', s.stats.LCK / 10);
+            } else if (reward.item === 'legendary') {
+              item = generateLoot('legendary', s.stats.LCK / 10);
+            } else if (reward.item === 'exotic') {
+              item = generateLoot('exotic', s.stats.LCK / 10);
+            }
+            
+            if (item && s.inventory.length < 30) {
+              s.inventory.push(item);
+            }
+          }
+          
+          // Skill rewards (TODO: implement skill system)
+          if (reward.skill) {
+            // Future: add skill XP or unlock
+          }
+        } else {
+          // Failure penalties
+          const penalty = option.failurePenalty;
+          
+          if (penalty.hpLoss) {
+            s.hp = Math.max(0, s.hp - penalty.hpLoss);
+          }
+          if (penalty.capsLoss) {
+            s.caps = Math.max(0, s.caps - penalty.capsLoss);
+          }
+          if (penalty.xpLoss) {
+            s.xp = Math.max(0, s.xp - penalty.xpLoss);
+          }
+          
+          // Status effects (TODO: implement status system)
+          if (penalty.status) {
+            // Future: apply status effect
+          }
+        }
+        
+        // Mark tile as cleared
+        if (tilePos && s.mapData[currentTerritory]?.[tilePos.y]?.[tilePos.x]) {
+          s.mapData[currentTerritory][tilePos.y][tilePos.x].cleared = true;
+        }
+        
+        // Check if player died
+        if (s.hp <= 0) {
+          s.screen = 'gameOver';
+          s.deathReason = rollResult.success ? 'Rift HP cost' : 'Failed rift challenge';
+        } else {
+          // Return to map
+          s.screen = 'map';
+        }
+        
+        s.currentRift = null;
+      });
+      
+      // Auto-save
+      setTimeout(() => autoSave(get()), 100);
+    },
+    
+    exitRift: () => set(state => {
+      state.currentRift = null;
+      state.screen = 'map';
+    }),
   }))
 );
 

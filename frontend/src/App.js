@@ -14,6 +14,7 @@ import SkillsScreen from "./screens/SkillsScreen";
 import TownScreen from "./screens/TownScreen";
 import LevelUpScreen from "./screens/LevelUpScreen";
 import GameOverScreen from "./screens/GameOverScreen";
+import RiftScreen from "./screens/RiftScreen";
 
 function App() {
   const screen = useGameStore(state => state.screen);
@@ -50,6 +51,8 @@ function App() {
         return <LevelUpScreen />;
       case 'gameOver':
         return <GameOverScreen />;
+      case 'rift':
+        return <RiftScreen />;
       default:
         return <TitleScreen />;
     }
