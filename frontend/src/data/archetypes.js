@@ -1,0 +1,135 @@
+// 10 Archetypes (Classes) with starting gear and playstyle
+export const ARCHETYPES = {
+  warrior: {
+    id: 'warrior',
+    name: 'Warrior',
+    icon: '⚔️',
+    weaponType: 'melee',
+    role: 'Frontline Brawler',
+    description: 'High STR/END tank. Iron Fist weapon specialization.',
+    baseStats: { STR: 8, AGI: 4, INT: 3, END: 7, LCK: 3 },
+    startingWeapon: { id: 'iron_fist', name: 'Iron Fist', type: 'melee', damage: [8, 14], element: null },
+    startingArmor: null,
+    startingItem: null,
+    passive: 'Brace reduces 30% more damage'
+  },
+  scavenger: {
+    id: 'scavenger',
+    name: 'Scavenger',
+    icon: '🔧',
+    weaponType: 'melee',
+    role: 'Loot Master',
+    description: 'AGI/LCK focused. Bleed-inducing shiv attacks.',
+    baseStats: { STR: 4, AGI: 7, INT: 4, END: 4, LCK: 6 },
+    startingWeapon: { id: 'rusty_shiv', name: 'Rusty Shiv', type: 'melee', damage: [5, 10], element: 'bleed', bleedChance: 0.35 },
+    startingArmor: null,
+    startingItem: null,
+    passive: '+25% loot quality bonus'
+  },
+  doc: {
+    id: 'doc',
+    name: 'Doc',
+    icon: '⚕️',
+    weaponType: 'melee',
+    role: 'Combat Medic',
+    description: 'INT-based healer. Keeps the team alive.',
+    baseStats: { STR: 3, AGI: 4, INT: 8, END: 5, LCK: 5 },
+    startingWeapon: { id: 'scalpel', name: 'Scalpel', type: 'melee', damage: [4, 9], element: 'bleed', bleedChance: 0.2 },
+    startingArmor: null,
+    startingItem: { id: 'stimpack', name: 'Stimpack', type: 'consumable', effect: 'heal', value: 50 },
+    passive: 'Healing items restore 40% more HP'
+  },
+  grunt: {
+    id: 'grunt',
+    name: 'Grunt',
+    icon: '🪖',
+    weaponType: 'melee',
+    role: 'Armored Soldier',
+    description: 'STR/END with starting armor. Reliable fighter.',
+    baseStats: { STR: 6, AGI: 4, INT: 4, END: 6, LCK: 5 },
+    startingWeapon: { id: 'pipe_bat', name: 'Pipe Bat', type: 'melee', damage: [7, 12], element: null },
+    startingArmor: { id: 'leather_vest', name: 'Leather Vest', type: 'chest', defense: 5, slot: 'chest' },
+    startingItem: null,
+    passive: '+10% damage reduction from all sources'
+  },
+  sniper: {
+    id: 'sniper',
+    name: 'Sniper',
+    icon: '🎯',
+    weaponType: 'ranged',
+    role: 'Long-Range Executioner',
+    description: 'High crit chance. Devastating headshots.',
+    baseStats: { STR: 3, AGI: 6, INT: 5, END: 4, LCK: 7 },
+    startingWeapon: { id: 'bolt_rifle', name: 'Bolt Rifle', type: 'ranged', damage: [10, 18], element: null, critBonus: 0.15 },
+    startingArmor: null,
+    startingItem: null,
+    passive: '+20% crit damage, +10% crit chance'
+  },
+  pyro: {
+    id: 'pyro',
+    name: 'Pyro',
+    icon: '🔥',
+    weaponType: 'ranged',
+    role: 'Burn Specialist',
+    description: 'Flamethrower wielder. Sets enemies ablaze.',
+    baseStats: { STR: 4, AGI: 5, INT: 6, END: 5, LCK: 5 },
+    startingWeapon: { id: 'flamethrower', name: 'Flamethrower', type: 'ranged', damage: [6, 11], element: 'fire', burnChance: 0.55 },
+    startingArmor: null,
+    startingItem: { id: 'adrenaline', name: 'Adrenaline Shot', type: 'consumable', effect: 'ap', value: 3 },
+    passive: 'Burn damage ticks deal 25% more'
+  },
+  gunslinger: {
+    id: 'gunslinger',
+    name: 'Gunslinger',
+    icon: '🔫',
+    weaponType: 'ranged',
+    role: 'Quick-Draw Artist',
+    description: 'Ultra-high AGI/LCK/crit. Fast and deadly.',
+    baseStats: { STR: 3, AGI: 8, INT: 4, END: 3, LCK: 7 },
+    startingWeapon: { id: 'dual_pistols', name: 'Dual Pistols', type: 'ranged', damage: [5, 9], element: null, attacks: 2, critBonus: 0.1 },
+    startingArmor: null,
+    startingItem: null,
+    passive: 'Attacks twice per ATK action'
+  },
+  berserker: {
+    id: 'berserker',
+    name: 'Berserker',
+    icon: '😤',
+    weaponType: 'melee',
+    role: 'Rage Tank',
+    description: 'Max STR/END. Goes berserk when low HP.',
+    baseStats: { STR: 9, AGI: 3, INT: 2, END: 8, LCK: 3 },
+    startingWeapon: { id: 'great_cleaver', name: 'Great Cleaver', type: 'melee', damage: [12, 20], element: null },
+    startingArmor: null,
+    startingItem: null,
+    passive: '+50% damage when below 30% HP'
+  },
+  ghost: {
+    id: 'ghost',
+    name: 'Ghost',
+    icon: '👻',
+    weaponType: 'melee',
+    role: 'Silent Assassin',
+    description: 'AGI 11. Critical bleeds from the shadows.',
+    baseStats: { STR: 4, AGI: 11, INT: 4, END: 3, LCK: 6 },
+    startingWeapon: { id: 'silenced_blade', name: 'Silenced Blade', type: 'melee', damage: [6, 12], element: 'bleed', bleedChance: 0.30, critBonus: 0.18 },
+    startingArmor: null,
+    startingItem: null,
+    passive: '28% base crit chance, 30% bleed on hit'
+  },
+  engineer: {
+    id: 'engineer',
+    name: 'Engineer',
+    icon: '⚙️',
+    weaponType: 'ranged',
+    role: 'Tech Specialist',
+    description: 'INT 10. Shock weapons and gadgets.',
+    baseStats: { STR: 3, AGI: 5, INT: 10, END: 4, LCK: 5 },
+    startingWeapon: { id: 'shock_rifle', name: 'Shock Rifle', type: 'ranged', damage: [7, 13], element: 'shock', stunChance: 0.2 },
+    startingArmor: null,
+    startingItem: { id: 'emp_grenade', name: 'EMP Grenade', type: 'consumable', effect: 'stun_all', value: 1 },
+    passive: 'Shock effects last 1 extra turn'
+  }
+};
+
+export const ARCHETYPE_LIST = Object.values(ARCHETYPES);
