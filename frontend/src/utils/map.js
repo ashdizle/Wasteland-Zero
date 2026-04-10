@@ -33,7 +33,7 @@ export const generateTerritoryMap = (territoryId) => {
   // Ensure boss is at top center (3, 0)
   map[0][3] = {
     type: TILE_TYPES.BOSS,
-    enemy: territory.boss,
+    enemies: [territory.boss],
     explored: false,
     cleared: false
   };
@@ -51,6 +51,29 @@ export const generateTerritoryMap = (territoryId) => {
     explored: true,
     cleared: true
   };
+  
+  // Guarantee some fights near the start for better gameplay
+  // Place fights at specific early-game locations
+  const earlyFightPositions = [
+    [2, 6], [4, 6], // Left and right of start
+    [2, 5], [4, 5], // Around town
+    [3, 4], [2, 4], [4, 4] // Above town
+  ];
+  
+  earlyFightPositions.forEach(([x, y]) => {
+    if (map[y][x].type === TILE_TYPES.EMPTY || Math.random() < 0.7) {
+      const enemies = territory.enemies;
+      const enemyId = enemies[Math.floor(Math.random() * enemies.length)];
+      const enemyCount = Math.random() < 0.3 ? 2 : 1;
+      
+      map[y][x] = {
+        type: TILE_TYPES.FIGHT,
+        enemies: Array(enemyCount).fill(enemyId),
+        explored: false,
+        cleared: false
+      };
+    }
+  });
   
   // Add guaranteed dungeon
   const dungeonY = Math.floor(Math.random() * 3) + 2;
