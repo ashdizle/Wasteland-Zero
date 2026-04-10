@@ -6718,3 +6718,114 @@ window.G = G;
 document.addEventListener('DOMContentLoaded', () => {
   G.init();
 });
+
+
+
+// ═══════════════════════════════════════════════════════════════
+//  PREMIUM STORE INTEGRATION
+// ═══════════════════════════════════════════════════════════════
+
+G.showStore = function() {
+  if (typeof Store === 'undefined' || !Store.products) {
+    this.toast('🏪 Store loading...', 2000);
+    setTimeout(() => this.showStore(), 1000);
+    return;
+  }
+  
+  const storeHTML = `
+    <div id="store-screen" class="screen" style="display:flex;flex-direction:column;overflow-y:auto;padding:20px 12px">
+      <button style="position:absolute;top:12px;left:12px;font-family:var(--font-title);font-size:.9rem;padding:8px 16px;background:linear-gradient(180deg,#5d4428 0%,#3d2914 100%);border:2px solid #7a6a4a;border-radius:6px;color:#d4a44a;cursor:pointer;z-index:100;letter-spacing:.05em" onclick="G.closeStore()">← BACK</button>
+      
+      <h2 style="font-family:var(--font-title);font-size:2rem;color:#d4a44a;text-align:center;margin:40px 0 24px;letter-spacing:.08em;text-shadow:2px 2px 0 #000,0 0 10px rgba(212,164,74,0.5)">🏪 PREMIUM STORE</h2>
+      
+      ${Store.renderStore()}
+      
+      <div style="margin-top:24px;padding:16px;background:rgba(61,41,20,0.3);border-radius:8px;border:1px solid #5d4428">
+        <p style="font-family:var(--font-mono);font-size:.75rem;color:#a8c4d4;text-align:center;line-height:1.5;margin:0">
+          All purchases are secure via Stripe.<br>
+          Support development & unlock exclusive content!
+        </p>
+      </div>
+    </div>
+  `;
+  
+  document.getElementById('app').insertAdjacentHTML('beforeend', storeHTML);
+  this.hideAllScreens();
+  document.getElementById('store-screen').style.display = 'flex';
+  AudioEngine.sfx.click && AudioEngine.sfx.click();
+};
+
+G.closeStore = function() {
+  const storeScreen = document.getElementById('store-screen');
+  if (storeScreen) storeScreen.remove();
+  this.show('screen-start');
+  AudioEngine.sfx.click && AudioEngine.sfx.click();
+};
+
+// XP Boost integration
+G._originalGainXP = G.gainXP;
+G.gainXP = function(amount, reason = '') {
+  let finalAmount = amount;
+  
+  if (typeof Store !== 'undefined' && Store.hasActiveBenefit && Store.hasActiveBenefit('xp_boost_24h')) {
+    finalAmount = Math.floor(amount * 1.5);
+    if (reason) reason += ' <span style="color:#c084fc">(+50% BOOST)</span>';
+  }
+  
+  return this._originalGainXP.call(this, finalAmount, reason);
+};
+
+// Caps Boost integration  
+G._originalAddCaps = function(amount, silent = false) {
+  this.state.caps = (this.state.caps || 0) + amount;
+  if (!silent) this.renderHUD();
+};
+
+G.addCaps = function(amount, silent = false) {
+  let finalAmount = amount;
+  
+  if (typeof Store !== 'undefined' && Store.hasActiveBenefit && Store.hasActiveBenefit('caps_boost_24h')) {
+    finalAmount = Math.floor(amount * 1.5);
+  }
+  
+  this._originalAddCaps.call(this, finalAmount, silent);
+  if (!silent && finalAmount !== amount) {
+    this.toast(`+${finalAmount} 💰 <span style="color:#c084fc">(+50% BOOST)</span>`, 1600);
+  }
+};
+
+// Show active boost indicator
+G.updateBoostIndicator = function() {
+  if (typeof Store === 'undefined') return;
+  
+  let boostHTML = '';
+  const boosts = [];
+  
+  if (Store.hasActiveBenefit && Store.hasActiveBenefit('xp_boost_24h')) boosts.push('⚡ XP +50%');
+  if (Store.hasActiveBenefit && Store.hasActiveBenefit('loot_boost_24h')) boosts.push('💎 LOOT +25%');
+  if (Store.hasActiveBenefit && Store.hasActiveBenefit('caps_boost_24h')) boosts.push('💰 CAPS +50%');
+  
+  if (boosts.length > 0) {
+    boostHTML = `<div class="boost-active-indicator" style="position:fixed;top:60px;right:12px;background:linear-gradient(135deg,#6d28d9 0%,#4c1d95 100%);border:2px solid #c084fc;border-radius:8px;padding:8px 12px;font-family:var(--font-title);font-size:.75rem;color:#e9d5ff;letter-spacing:.05em;z-index:99;box-shadow:0 0 10px rgba(192,132,252,0.4)">${boosts.join(' · ')}</div>`;
+  }
+  
+  const existing = document.querySelector('.boost-active-indicator');
+  if (existing) existing.remove();
+  
+  if (boostHTML) {
+    document.getElementById('app').insertAdjacentHTML('beforeend', boostHTML);
+  }
+};
+
+// Update boost indicator periodically
+setInterval(() => {
+  if (typeof Store !== 'undefined' && G.state && G.state.screen !== 'start') {
+    G.updateBoostIndicator();
+  }
+}, 5000);
+
+// Remove Emergent badge if premium purchased
+if (typeof Store !== 'undefined' && Store.hasActiveBenefit && Store.hasActiveBenefit('no_branding')) {
+  const badge = document.getElementById('emergent-badge');
+  if (badge) badge.style.display = 'none';
+}
