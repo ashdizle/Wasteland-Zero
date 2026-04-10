@@ -91,8 +91,8 @@ const MapScreen = () => {
                   data-testid={`tile-${x}-${y}`}
                   onClick={() => handleTileClick(x, y)}
                   className={`map-tile ${
-                    isCurrent ? 'map-tile-current' : 
-                    !isExplored ? 'map-tile-unexplored' :
+                    isCurrent ? 'map-tile-current' : ''
+                  } ${!isExplored ? 'map-tile-unexplored' : ''} ${
                     canMove ? 'map-tile-adjacent' : ''
                   }`}
                 >
