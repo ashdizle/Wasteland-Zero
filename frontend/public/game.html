@@ -14,6 +14,23 @@
 <link rel="stylesheet" href="/store.css">
 <link rel="stylesheet" href="/leaderboard.css">
 <link rel="stylesheet" href="/newsletter.css">
+
+<!-- Google Analytics 4 - Loaded conditionally after consent -->
+<script>
+  // Check if user has given consent
+  if (localStorage.getItem('ga_consent') === 'true') {
+    // Load GA4
+    var script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-RNSJ9FG8T3';
+    document.head.appendChild(script);
+    
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-RNSJ9FG8T3');
+  }
+</script>
 </head>
 <body>
 <div id="app">
@@ -611,11 +628,55 @@
   </div>
 </div>
 
+<!-- Cookie Consent Banner -->
+<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:rgba(26,20,16,0.98);border-top:2px solid #d4a44a;padding:20px;z-index:10000;text-align:center;font-family:'Share Tech Mono',monospace">
+  <p style="color:#d4a44a;margin-bottom:15px;font-size:0.9rem">
+    🍪 This site uses Google Analytics to improve your experience. 
+    <a href="https://policies.google.com/privacy" target="_blank" style="color:#a8c4d4;text-decoration:underline">Privacy Policy</a>
+  </p>
+  <button id="cookie-accept" style="padding:10px 24px;background:#d4a44a;color:#1a1410;border:none;border-radius:4px;cursor:pointer;margin-right:10px;font-family:'Share Tech Mono',monospace;font-weight:bold">Accept</button>
+  <button id="cookie-decline" style="padding:10px 24px;background:transparent;color:#d4a44a;border:1px solid #d4a44a;border-radius:4px;cursor:pointer;font-family:'Share Tech Mono',monospace">Decline</button>
+</div>
+
 </div><!-- #app -->
 
 <script>
   // Set backend URL for API calls (must match REACT_APP_BACKEND_URL from .env)
   window.BACKEND_URL = 'https://panel-adventure.preview.emergentagent.com';
+  
+  // Cookie Consent Banner Logic
+  (function() {
+    const banner = document.getElementById('cookie-banner');
+    const consent = localStorage.getItem('ga_consent');
+    
+    // Show banner if user hasn't made a choice
+    if (consent === null) {
+      banner.style.display = 'block';
+    }
+    
+    // Accept button
+    document.getElementById('cookie-accept').addEventListener('click', function() {
+      localStorage.setItem('ga_consent', 'true');
+      banner.style.display = 'none';
+      
+      // Load GA4 dynamically
+      var script = document.createElement('script');
+      script.async = true;
+      script.src = 'https://www.googletagmanager.com/gtag/js?id=G-RNSJ9FG8T3';
+      document.head.appendChild(script);
+      
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-RNSJ9FG8T3');
+    });
+    
+    // Decline button
+    document.getElementById('cookie-decline').addEventListener('click', function() {
+      localStorage.setItem('ga_consent', 'false');
+      banner.style.display = 'none';
+    });
+  })();
 </script>
 <script src="/data.js?v=29a"></script>
 <script src="/audio.js?v=27b"></script>

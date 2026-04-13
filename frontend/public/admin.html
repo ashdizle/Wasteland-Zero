@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wasteland Zero - Admin Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/admin.css">
+</head>
+<body>
+<div id="app">
+  <!-- Login Screen -->
+  <div id="login-screen">
+    <div class="login-box">
+      <h1>🎲 WASTELAND ZERO</h1>
+      <h2>Admin Dashboard</h2>
+      <input type="password" id="password-input" placeholder="Enter admin password" />
+      <button id="login-btn">LOGIN</button>
+      <div id="login-error"></div>
+    </div>
+  </div>
+
+  <!-- Dashboard Screen -->
+  <div id="dashboard-screen" style="display:none">
+    <header>
+      <h1>🎲 Wasteland Zero - Admin Dashboard</h1>
+      <button id="logout-btn">Logout</button>
+    </header>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">📧</div>
+        <div class="stat-value" id="newsletter-count">-</div>
+        <div class="stat-label">Newsletter Subscribers</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">🏆</div>
+        <div class="stat-value" id="leaderboard-count">-</div>
+        <div class="stat-label">Leaderboard Entries</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">💚</div>
+        <div class="stat-value" id="health-status">-</div>
+        <div class="stat-label">System Health</div>
+      </div>
+    </div>
+
+    <div class="leaderboard-section">
+      <h2>🏆 Top 10 Players</h2>
+      <table id="top-players-table">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>XP</th>
+            <th>Level</th>
+            <th>Caps</th>
+            <th>Rifts</th>
+            <th>Bosses</th>
+          </tr>
+        </thead>
+        <tbody id="top-players-body">
+          <tr><td colspan="7">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="links-section">
+      <h2>🔗 Quick Links</h2>
+      <a href="https://dashboard.stripe.com" target="_blank" class="link-btn">📊 Stripe Dashboard</a>
+      <a href="/game.html" target="_blank" class="link-btn">🎮 Play Game</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const BACKEND_URL = 'https://panel-adventure.preview.emergentagent.com';
+let authToken = localStorage.getItem('admin_token');
+
+// Check if already logged in
+if (authToken) {
+  verifyAndLoadDashboard();
+}
+
+// Login
+document.getElementById('login-btn').addEventListener('click', login);
+document.getElementById('password-input').addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') login();
+});
+
+async function login() {
+  const password = document.getElementById('password-input').value;
+  const errorDiv = document.getElementById('login-error');
+  
+  if (!password) {
+    errorDiv.textContent = 'Please enter a password';
+    return;
+  }
+
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/admin/stats`, {
+      headers: { 'Authorization': `Bearer ${password}` }
+    });
+
+    if (res.ok) {
+      authToken = password;
+      localStorage.setItem('admin_token', password);
+      showDashboard();
+      loadDashboardData();
+    } else {
+      errorDiv.textContent = 'Invalid password';
+    }
+  } catch (err) {
+    errorDiv.textContent = 'Connection error';
+  }
+}
+
+async function verifyAndLoadDashboard() {
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/admin/stats`, {
+      headers: { 'Authorization': `Bearer ${authToken}` }
+    });
+
+    if (res.ok) {
+      showDashboard();
+      loadDashboardData();
+    } else {
+      localStorage.removeItem('admin_token');
+      authToken = null;
+    }
+  } catch (err) {
+    console.error('Verify failed:', err);
+  }
+}
+
+function showDashboard() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('dashboard-screen').style.display = 'block';
+}
+
+// Logout
+document.getElementById('logout-btn').addEventListener('click', () => {
+  localStorage.removeItem('admin_token');
+  location.reload();
+});
+
+// Load dashboard data
+async function loadDashboardData() {
+  try {
+    // Load stats
+    const statsRes = await fetch(`${BACKEND_URL}/api/admin/stats`, {
+      headers: { 'Authorization': `Bearer ${authToken}` }
+    });
+    const stats = await statsRes.json();
+
+    document.getElementById('newsletter-count').textContent = stats.newsletter_subscribers;
+    document.getElementById('leaderboard-count').textContent = stats.leaderboard_entries;
+
+    // Load top players
+    const tbody = document.getElementById('top-players-body');
+    if (stats.top_players.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7">No leaderboard entries yet</td></tr>';
+    } else {
+      tbody.innerHTML = stats.top_players.map((p, i) => `
+        <tr>
+          <td>${i + 1}</td>
+          <td>${p.player_name}</td>
+          <td>${p.total_xp.toLocaleString()}</td>
+          <td>${p.deepest_level}</td>
+          <td>${p.caps_earned}</td>
+          <td>${p.rifts_discovered}</td>
+          <td>${p.bosses_killed}</td>
+        </tr>
+      `).join('');
+    }
+
+    // Check health
+    const healthRes = await fetch(`${BACKEND_URL}/api/health`);
+    const health = await healthRes.json();
+    const healthStatus = document.getElementById('health-status');
+    
+    if (health.status === 'healthy') {
+      healthStatus.textContent = 'HEALTHY';
+      healthStatus.style.color = '#4ade80';
+    } else {
+      healthStatus.textContent = 'UNHEALTHY';
+      healthStatus.style.color = '#f87171';
+    }
+  } catch (err) {
+    console.error('Load failed:', err);
+  }
+}
+
+// Auto-refresh every 30 seconds
+setInterval(() => {
+  if (authToken && document.getElementById('dashboard-screen').style.display !== 'none') {
+    loadDashboardData();
+  }
+}, 30000);
+</script>
+</body>
+</html>
