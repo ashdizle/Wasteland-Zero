@@ -1,0 +1,20 @@
+{
+  "appId": "com.wastelandzero.app",
+  "appName": "Wasteland Zero",
+  "webDir": "public",
+  "server": {
+    "url": "https://panel-adventure.preview.emergentagent.com",
+    "cleartext": true
+  },
+  "ios": {
+    "contentInset": "always",
+    "allowsLinkPreview": false
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 2000,
+      "backgroundColor": "#1a1410",
+      "showSpinner": false
+    }
+  }
+}

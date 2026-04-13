@@ -14,7 +14,7 @@ from datetime import datetime, timezone
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-from routes import payments, leaderboard, newsletter, health, admin
+from routes import payments, leaderboard, newsletter, health, admin, iap
 
 # MongoDB connection
 mongo_url = os.environ['MONGO_URL']
@@ -92,6 +92,7 @@ app.include_router(leaderboard.router)
 app.include_router(newsletter.router)
 app.include_router(health.router)
 app.include_router(admin.router)
+app.include_router(iap.router)
 
 
 @app.on_event("shutdown")
