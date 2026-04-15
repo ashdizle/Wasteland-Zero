@@ -2125,7 +2125,12 @@ const G = {
       if (advCrit) critChance += advCrit;
       const isCrit = natTwenty || firstStrikeCrit || Math.random() < critChance;
       const advantageMult = this._getAdvantageMultiplier();
-      let dmg = Math.round((this.getWeaponAtk() + s[offStat.key] * 1.5) * (0.8 + Math.random() * 0.4) * advantageMult * hitMult);
+      // New formula: Weapon ATK scales with your main stat (INT/STR/AGI builds benefit)
+      const weaponBase = this.getWeaponAtk();
+      const statScaling = 1 + (s[offStat.key] / 20); // Each 20 points = 2x weapon damage
+      const weaponDmg = weaponBase * statScaling;
+      const statBonus = s[offStat.key] * 0.8; // Flat stat bonus
+      let dmg = Math.round((weaponDmg + statBonus) * (0.8 + Math.random() * 0.4) * advantageMult * hitMult);
       if (advantageMult > 1) this.logCombat(`⚔ ADVANTAGE! +${Math.round((advantageMult-1)*100)}% DMG`, 'log-status');
       if (advantageMult < 1) this.logCombat(`🛡 DISADVANTAGE! ${Math.round((advantageMult-1)*100)}% DMG`, 'log-status');
       if (this.getAdvClassEffect('burnDmgBonus') && enemy.statuses && enemy.statuses.find(st => st.type === 'burn')) {
@@ -2245,12 +2250,15 @@ const G = {
       this.enemyTurn();
 
     } else if (action === 'brace') {
-      // Brace is FREE — restores AP and reduces incoming damage
+      // Brace is FREE — restores AP, reduces incoming damage, and HEALS 15% max HP
       const apBefore = s.ap;
       s.ap = Math.min(s.maxAp, s.ap + 2);
       this.combat.braceActive = true;
+      // Heal on brace (15% max HP, minimum 10)
+      const healAmount = Math.max(10, Math.floor(s.maxHp * 0.15));
+      s.hp = Math.min(s.maxHp, s.hp + healAmount);
       AudioEngine.sfx.brace();
-      this.logCombat(`🛡 You brace! (+${s.ap - apBefore} AP · damage halved next hit)`, 'log-status');
+      this.logCombat(`🛡 You brace! (+${s.ap - apBefore} AP · damage halved · +${healAmount} HP)`, 'log-status');
       this.updateCombatUI();
       this.enemyTurn();
 
@@ -3659,6 +3667,13 @@ const G = {
   leaveTown() { this.show('screen-map'); this.renderMap(); this.renderHUD(); },
 
   // ─── BOUNTIES ───
+  refreshBounties() {
+    this.genBounties();
+    this.genBounties();
+    this.renderBountyBoard();
+    this.toast('📋 Bounty board checked!', 1500);
+  },
+
   genBounties() {
     const s = this.state;
     if (!s.bounties) s.bounties = [];
@@ -3678,8 +3693,15 @@ const G = {
     const active = s.bounties.filter(b => !b.done);
     const done   = s.bounties.filter(b =>  b.done).slice(-3);
     let html = '';
+    
+    // Add header with refresh button
+    html += `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid rgba(212,164,74,0.3)">
+      <div style="font-family:var(--font-title);font-size:1rem;color:#d4a44a;letter-spacing:0.05em">💀 ACTIVE CONTRACTS</div>
+      <button onclick="G.refreshBounties()" style="font-family:var(--font-title);font-size:0.7rem;padding:6px 12px;background:rgba(212,164,74,0.1);border:2px solid #d4a44a;color:#d4a44a;border-radius:6px;cursor:pointer;letter-spacing:0.05em">🔄 CHECK BOARD</button>
+    </div>`;
+    
     if (!active.length) {
-      html = '<div style="font-size:.68rem;color:#8a7a5a;padding:10px;text-align:center;border:1px dashed #362a1a;border-radius:8px">No contracts posted. Check back later.</div>';
+      html += '<div style="font-size:.68rem;color:#8a7a5a;padding:10px;text-align:center;border:1px dashed #362a1a;border-radius:8px">No contracts posted. Click "CHECK BOARD" to look for work.</div>';
     }
     active.forEach(b => {
       const pct = Math.min(100, (b.progress / b.count) * 100);
