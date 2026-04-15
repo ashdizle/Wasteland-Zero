@@ -80,3 +80,13 @@ memory/test_credentials.md
 
 # Mobile development
 android-sdk/
+
+# Backend environment (CRITICAL - DO NOT COMMIT)
+backend/.env
+frontend/.env
+
+# iOS
+frontend/ios/App/Pods/
+frontend/ios/App/App/public/
+*.xcworkspace
+xcuserdata/
