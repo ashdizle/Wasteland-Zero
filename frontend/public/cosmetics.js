@@ -69,9 +69,19 @@ const Cosmetics = {
   },
 
   updateGemDisplay() {
+    // Update in shop header
     const gemDisplay = document.getElementById('gem-count');
     if (gemDisplay && this.data) {
-      gemDisplay.textContent = `💎 ${this.data.total_gems}`;
+      const gemAmount = document.getElementById('gem-amount');
+      if (gemAmount) {
+        gemAmount.textContent = this.data.total_gems;
+      }
+    }
+    
+    // Update in shop modal if open
+    const shopGemAmount = document.querySelector('.gem-balance .gem-amount');
+    if (shopGemAmount && this.data) {
+      shopGemAmount.textContent = this.data.total_gems;
     }
   },
 

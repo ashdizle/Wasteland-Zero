@@ -149,6 +149,11 @@
       <button onclick="Leaderboard.show()" style="font-family:var(--font-title);font-size:.75rem;letter-spacing:.06em;padding:10px 14px;min-height:40px;border:2px solid var(--green);background:rgba(180,140,60,.06);color:var(--green);cursor:pointer;border-radius:12px;font-weight:900;text-transform:uppercase;box-shadow:0 3px 0 rgba(180,140,60,.3);flex:1">🏆 LEADERBOARD</button>
       <button onclick="Newsletter.show()" style="font-family:var(--font-title);font-size:.75rem;letter-spacing:.06em;padding:10px 14px;min-height:40px;border:2px solid #a8c4d4;background:rgba(168,196,212,.06);color:#a8c4d4;cursor:pointer;border-radius:12px;font-weight:900;text-transform:uppercase;box-shadow:0 3px 0 rgba(168,196,212,.3);flex:1">📬 UPDATES</button>
     </div>
+    <div style="display:flex;gap:8px;width:calc(100% - 24px);max-width:316px;margin-top:8px">
+      <button onclick="Prestige.openPrestigeScreen()" style="font-family:var(--font-title);font-size:.75rem;letter-spacing:.06em;padding:10px 14px;min-height:40px;border:2px solid #fbbf24;background:rgba(251,191,36,.06);color:#fbbf24;cursor:pointer;border-radius:12px;font-weight:900;text-transform:uppercase;box-shadow:0 3px 0 rgba(251,191,36,.3);flex:1">🏆 PRESTIGE</button>
+      <button onclick="Cosmetics.openShop()" style="font-family:var(--font-title);font-size:.75rem;letter-spacing:.06em;padding:10px 14px;min-height:40px;border:2px solid #4ade80;background:rgba(74,222,128,.06);color:#4ade80;cursor:pointer;border-radius:12px;font-weight:900;text-transform:uppercase;box-shadow:0 3px 0 rgba(74,222,128,.3);flex:1">💎 SHOP</button>
+    </div>
+    <div id="gem-count" style="margin-top:12px;display:inline-flex;align-items:center;gap:8px;background:rgba(74,222,128,0.1);border:2px solid #4ade80;border-radius:8px;padding:8px 16px;font-weight:900;color:#4ade80;font-size:1.1rem;cursor:pointer" onclick="Cosmetics.openShop()">💎 <span id="gem-amount">0</span></div>
   </div>
 </div>
 
@@ -645,6 +650,7 @@
 <script src="/newsletter.js"></script>
 <script src="/prestige.js"></script>
 <script src="/cosmetics.js"></script>
+<script src="/meta-integration.js"></script>
 <script src="/main.js?v=29d"></script>
 </body>
 </html>
