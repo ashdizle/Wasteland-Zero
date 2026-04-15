@@ -4,6 +4,7 @@ const Cosmetics = {
   data: null,
   catalog: null,
   currentFilter: 'all',
+  currentMainTab: 'cosmetics', // 'cosmetics' or 'store'
 
   async init() {
     await this.loadData();
@@ -111,6 +112,27 @@ const Cosmetics = {
         });
       }
     }
+    
+    // Initialize Stripe if needed
+    this.initializeStripe();
+  },
+  
+  initializeStripe() {
+    if (!window.Stripe) {
+      const script = document.createElement('script');
+      script.src = 'https://js.stripe.com/v3/';
+      script.onload = () => {
+        window.stripe = Stripe('pk_live_51TKimHGz3LGNY9vIPyp45wik3GQSBGYHZvr2MtHuRK6n5yfnIoR0FDchARA1yoigv4fWOXITQUASyMWww7M7fCdw00UzT6EWXf');
+      };
+      document.head.appendChild(script);
+    } else if (!window.stripe) {
+      window.stripe = Stripe('pk_live_51TKimHGz3LGNY9vIPyp45wik3GQSBGYHZvr2MtHuRK6n5yfnIoR0FDchARA1yoigv4fWOXITQUASyMWww7M7fCdw00UzT6EWXf');
+    }
+  },
+  
+  switchMainTab(tab) {
+    this.currentMainTab = tab;
+    this.renderShop();
   },
 
   closeShop() {
@@ -124,53 +146,161 @@ const Cosmetics = {
     const content = document.getElementById('cosmetics-content');
     if (!content) return;
 
-    content.innerHTML = `
-      <div class="shop-header">
-        <h2>💎 COSMETIC SHOP</h2>
-        <div class="gem-balance">
-          <span class="gem-icon">💎</span>
-          <span class="gem-amount">${this.data.total_gems}</span> Gems
-        </div>
-      </div>
-
-      <div class="shop-tabs">
-        <button class="shop-tab active" data-filter="all">All Items</button>
-        <button class="shop-tab" data-filter="character_skin">Character Skins</button>
-        <button class="shop-tab" data-filter="dice_skin">Dice Skins</button>
-        <button class="shop-tab" data-filter="ui_theme">UI Themes</button>
-        <button class="shop-tab" data-filter="legendary">Legendary</button>
-        <button class="shop-tab" data-filter="gems">Buy Gems</button>
-      </div>
-
-      <div class="shop-content">
-        <div id="items-grid" class="items-grid"></div>
-        <div id="gems-packages" class="gems-packages" style="display: none;"></div>
-      </div>
-
-      <div class="shop-footer">
-        <button class="ad-btn" id="watch-ad-btn">
-          📺 Watch Ad for 5 Gems
-          <span class="ad-count">(${this.data.ads_watched_today || 0}/10 today)</span>
+    const mainTabsHTML = `
+      <div class="main-shop-tabs" style="display:flex;gap:8px;margin-bottom:20px;border-bottom:3px solid rgba(212,164,74,0.3);padding-bottom:10px">
+        <button class="main-shop-tab ${this.currentMainTab === 'cosmetics' ? 'active' : ''}" onclick="Cosmetics.switchMainTab('cosmetics')" style="flex:1;font-family:var(--font-title);font-size:1.1rem;padding:12px;background:${this.currentMainTab === 'cosmetics' ? 'rgba(74,222,128,0.2)' : 'rgba(212,164,74,0.1)'};border:2px solid ${this.currentMainTab === 'cosmetics' ? '#4ade80' : '#d4a44a'};color:${this.currentMainTab === 'cosmetics' ? '#4ade80' : '#d4a44a'};border-radius:8px;cursor:pointer;text-transform:uppercase;letter-spacing:0.05em;transition:all 0.2s">
+          💎 COSMETICS
+        </button>
+        <button class="main-shop-tab ${this.currentMainTab === 'store' ? 'active' : ''}" onclick="Cosmetics.switchMainTab('store')" style="flex:1;font-family:var(--font-title);font-size:1.1rem;padding:12px;background:${this.currentMainTab === 'store' ? 'rgba(245,164,66,0.2)' : 'rgba(212,164,74,0.1)'};border:2px solid ${this.currentMainTab === 'store' ? '#f5a442' : '#d4a44a'};color:${this.currentMainTab === 'store' ? '#f5a442' : '#d4a44a'};border-radius:8px;cursor:pointer;text-transform:uppercase;letter-spacing:0.05em;transition:all 0.2s">
+          🏪 STORE
         </button>
       </div>
     `;
 
-    // Setup tab switching
-    document.querySelectorAll('.shop-tab').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        document.querySelectorAll('.shop-tab').forEach(b => b.classList.remove('active'));
-        e.target.classList.add('active');
-        this.currentFilter = e.target.dataset.filter;
-        this.renderItems();
+    if (this.currentMainTab === 'cosmetics') {
+      content.innerHTML = mainTabsHTML + `
+        <div class="shop-header">
+          <h2>💎 COSMETIC SHOP</h2>
+          <div class="gem-balance">
+            <span class="gem-icon">💎</span>
+            <span class="gem-amount">${this.data.total_gems}</span> Gems
+          </div>
+        </div>
+
+        <div class="shop-tabs">
+          <button class="shop-tab active" data-filter="all">All Items</button>
+          <button class="shop-tab" data-filter="character_skin">Character Skins</button>
+          <button class="shop-tab" data-filter="dice_skin">Dice Skins</button>
+          <button class="shop-tab" data-filter="ui_theme">UI Themes</button>
+          <button class="shop-tab" data-filter="legendary">Legendary</button>
+          <button class="shop-tab" data-filter="gems">Buy Gems</button>
+        </div>
+
+        <div class="shop-content">
+          <div id="items-grid" class="items-grid"></div>
+          <div id="gems-packages" class="gems-packages" style="display: none;"></div>
+        </div>
+
+        <div class="shop-footer">
+          <button class="ad-btn" id="watch-ad-btn">
+            📺 Watch Ad for 5 Gems
+            <span class="ad-count">(${this.data.ads_watched_today || 0}/10 today)</span>
+          </button>
+        </div>
+      `;
+
+      // Setup tab switching
+      document.querySelectorAll('.shop-tab').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          document.querySelectorAll('.shop-tab').forEach(b => b.classList.remove('active'));
+          e.target.classList.add('active');
+          this.currentFilter = e.target.dataset.filter;
+          this.renderItems();
+        });
       });
-    });
 
-    // Setup ad button
-    document.getElementById('watch-ad-btn')?.addEventListener('click', () => {
-      this.watchAdForGems();
-    });
+      // Setup ad button
+      document.getElementById('watch-ad-btn')?.addEventListener('click', () => {
+        this.watchAdForGems();
+      });
 
-    this.renderItems();
+      this.renderItems();
+      
+    } else if (this.currentMainTab === 'store') {
+      content.innerHTML = mainTabsHTML + this.renderStripeStore();
+    }
+  },
+
+  renderStripeStore() {
+    return `
+      <div class="stripe-store-content">
+        <h2 style="font-family:var(--font-title);font-size:2rem;color:#f5a442;text-align:center;margin:0 0 24px;letter-spacing:.08em;text-shadow:2px 2px 0 #000,0 0 10px rgba(245,164,66,0.5)">🏪 PREMIUM STORE</h2>
+        
+        <div style="display:flex;flex-direction:column;gap:24px">
+          <!-- Premium Category -->
+          <div>
+            <h3 style="font-family:var(--font-title);font-size:1.3rem;color:#f5a442;margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid rgba(245,164,66,0.3);letter-spacing:.05em">💎 Premium</h3>
+            <div style="background:linear-gradient(145deg,rgba(76,29,149,0.2) 0%,rgba(30,27,75,0.3) 100%);border:2px solid #d4a44a;border-radius:8px;padding:16px">
+              <h4 style="font-family:var(--font-mono);font-size:1rem;color:#f5d742;margin:0 0 8px">Wasteland Zero Premium</h4>
+              <p style="font-family:var(--font-mono);font-size:.8rem;color:#a8c4d4;line-height:1.4;margin:0 0 12px">Remove branding, exclusive title screen, priority support</p>
+              <button onclick="Cosmetics.purchaseProduct('premium_unlock', 499)" style="font-family:var(--font-title);font-size:1.1rem;width:100%;padding:10px;background:linear-gradient(180deg,#d4a44a 0%,#b38838 100%);border:2px solid #f5d742;border-radius:6px;color:#1a1410;text-shadow:1px 1px 0 rgba(255,255,255,0.3);box-shadow:0 3px 0 #8b6b2c;cursor:pointer;letter-spacing:.05em">$4.99</button>
+            </div>
+          </div>
+          
+          <!-- Boosts Category -->
+          <div>
+            <h3 style="font-family:var(--font-title);font-size:1.3rem;color:#f5a442;margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid rgba(245,164,66,0.3);letter-spacing:.05em">⚡ Boosts</h3>
+            
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div style="background:linear-gradient(145deg,rgba(76,29,149,0.2) 0%,rgba(30,27,75,0.3) 100%);border:2px solid rgba(167,139,250,0.4);border-radius:8px;padding:14px">
+                <h4 style="font-family:var(--font-mono);font-size:1rem;color:#f5d742;margin:0 0 6px">24h XP Boost</h4>
+                <p style="font-family:var(--font-mono);font-size:.8rem;color:#a8c4d4;line-height:1.4;margin:0 0 10px">+50% XP gain for 24 hours</p>
+                <button onclick="Cosmetics.purchaseProduct('xp_boost_24h', 99)" style="font-family:var(--font-title);font-size:1.1rem;width:100%;padding:10px;background:linear-gradient(180deg,#d4a44a 0%,#b38838 100%);border:2px solid #f5d742;border-radius:6px;color:#1a1410;cursor:pointer">$0.99</button>
+              </div>
+              
+              <div style="background:linear-gradient(145deg,rgba(76,29,149,0.2) 0%,rgba(30,27,75,0.3) 100%);border:2px solid rgba(167,139,250,0.4);border-radius:8px;padding:14px">
+                <h4 style="font-family:var(--font-mono);font-size:1rem;color:#f5d742;margin:0 0 6px">Mega Boost Bundle</h4>
+                <p style="font-family:var(--font-mono);font-size:.8rem;color:#a8c4d4;line-height:1.4;margin:0 0 10px">All 3 boosts (XP, Loot, Caps) for 24h - Save 33%!</p>
+                <button onclick="Cosmetics.purchaseProduct('mega_boost_bundle', 199)" style="font-family:var(--font-title);font-size:1.1rem;width:100%;padding:10px;background:linear-gradient(180deg,#d4a44a 0%,#b38838 100%);border:2px solid #f5d742;border-radius:6px;color:#1a1410;cursor:pointer">$1.99</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Info -->
+          <div style="margin-top:12px;padding:16px;background:rgba(61,41,20,0.3);border-radius:8px;border:1px solid #5d4428">
+            <p style="font-family:var(--font-mono);font-size:.75rem;color:#a8c4d4;text-align:center;line-height:1.5;margin:0">
+              💳 All purchases are secure via Stripe<br>
+              💰 <strong style="color:#4ade80">LIVE MODE</strong> - Real payments enabled!<br>
+              🚀 Support development & unlock exclusive content!
+            </p>
+          </div>
+        </div>
+      </div>
+    `;
+  },
+  
+  async purchaseProduct(productId, priceInCents) {
+    const userId = `slot_${G.currentSlot || 1}`;
+    const apiUrl = window.location.origin;
+    
+    if (!window.stripe) {
+      G.toast('Loading payment system...', 2000);
+      this.initializeStripe();
+      setTimeout(() => this.purchaseProduct(productId, priceInCents), 1000);
+      return;
+    }
+    
+    G.toast('Opening checkout...', 2000);
+    
+    try {
+      const response = await fetch(`${apiUrl}/api/payments/create-checkout`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          product_id: productId,
+          user_id: userId,
+          success_url: `${window.location.origin}/game.html?purchase=success`,
+          cancel_url: `${window.location.origin}/game.html?purchase=cancelled`
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (data.session_id && window.stripe) {
+        const result = await window.stripe.redirectToCheckout({
+          sessionId: data.session_id
+        });
+        
+        if (result.error) {
+          G.toast(`Error: ${result.error.message}`, 3000);
+        }
+      } else {
+        G.toast('Failed to create checkout session', 3000);
+      }
+    } catch (error) {
+      console.error('Purchase error:', error);
+      G.toast('Purchase failed - please try again', 3000);
+    }
   },
 
   renderItems() {
