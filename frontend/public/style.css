@@ -292,7 +292,7 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--green);font-fa
   flex-direction:column;
   padding:0;
   backdrop-filter:blur(6px);
-  max-height:100px;
+  max-height:140px; /* Increased from 100px for better readability */
   overflow:hidden;
 }
 .clog-header{
@@ -303,6 +303,12 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--green);font-fa
   padding:4px 10px 2px;
   border-bottom:1px solid rgba(212,164,74,.10);
   flex-shrink:0;
+  cursor:pointer;
+  user-select:none;
+}
+.clog-header:hover{
+  color:rgba(212,164,74,.65);
+  background:rgba(212,164,74,.05);
 }
 .clog-body{
   display:flex;
@@ -310,6 +316,9 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--green);font-fa
   padding:3px 6px 4px;
   gap:1px;
   flex:1;
+  overflow-y:auto; /* Enable scrolling */
+  overflow-x:hidden;
+  scroll-behavior:smooth;
 }
 .clog-line{
   display:flex;

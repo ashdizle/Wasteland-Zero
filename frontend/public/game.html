@@ -401,11 +401,9 @@
   </div>
   <div class="loot-items" id="loot-items" style="padding:6px 8px;gap:6px;display:flex;flex-direction:column"></div>
   <div style="display:flex;gap:6px;margin-top:auto;padding:8px;flex-wrap:wrap;flex-shrink:0">
-    <button class="btn amber" onclick="G.collectAll()">COLLECT ALL</button>
-    <button class="btn blue" onclick="G.openLootBagModal()" style="font-size:.68rem">🎒 MANAGE BAG</button>
-    <button class="btn" onclick="G.sellAll()" style="font-size:.68rem">💰 SELL JUNK</button>
-    <button class="btn green" onclick="G.salvageAll()" style="font-size:.68rem">⚙ SALVAGE UNLOCKED</button>
-    <button class="btn red" onclick="G.leaveLoot()">LEAVE</button>
+    <button class="btn amber" onclick="G.collectAll()" style="flex:1;min-width:140px">📦 LOOT ALL & LEAVE</button>
+    <button class="btn green" onclick="G.salvageAll()" style="flex:1;min-width:140px">⚙ SALVAGE ALL LOOT</button>
+    <button class="btn blue" onclick="G.openLootBagModal()" id="manage-bag-btn" style="display:none;flex:1;min-width:140px">🎒 MANAGE BAG</button>
   </div>
 </div>
 

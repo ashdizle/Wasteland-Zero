@@ -3192,6 +3192,9 @@ const G = {
     }
     const manageBagHint = document.getElementById('loot-manage-bag-hint');
     if (manageBagHint) manageBagHint.style.display = bagFull ? 'block' : 'none';
+    // Show/hide MANAGE BAG button based on bag status
+    const manageBagBtn = document.getElementById('manage-bag-btn');
+    if (manageBagBtn) manageBagBtn.style.display = bagFull ? 'block' : 'none';
 
     // Build stacked groups and cache for action handlers
     this._lootGroups = this._buildLootGroups();
@@ -3391,8 +3394,8 @@ const G = {
     let totalMats = 0;
     unlocked.forEach(it => { totalMats += this._salvageMats(it); });
     this.showEventWarning(
-      '⚙ SALVAGE UNLOCKED LOOT?',
-      `Break down ${unlocked.length} unlocked item(s) into ~${totalMats} crafting materials (no caps)?${lockedCount ? ` ${lockedCount} locked item(s) will be kept.` : ''} Cannot be undone! Use SELL for caps instead.`,
+      '⚙ SALVAGE LOOT ITEMS?',
+      `Break down ${unlocked.length} unlocked LOOT item(s) into ~${totalMats} crafting materials?${lockedCount ? ` ${lockedCount} locked item(s) will be kept.` : ''} This only affects LOOT on this screen, not items in your bag. Cannot be undone!`,
       `⚙ SALVAGE ${unlocked.length} FOR ~${totalMats} MATS`,
       () => {
         let matCount = 0;
