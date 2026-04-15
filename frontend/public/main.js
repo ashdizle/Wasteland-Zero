@@ -1675,7 +1675,7 @@ const G = {
 
   // ─── COMBAT ───
   pickEnemy(danger) {
-    const scale = 1 + (this.state.lv - 1) * 0.12;
+    const scale = 1 + (this.state.lv - 1) * 0.25; // Increased from 0.12 to 0.25 for better challenge
 
     // 25% chance on danger 2-3 tiles to spawn a mini-boss
     if (danger >= 2 && Math.random() < 0.25) {
@@ -1697,9 +1697,9 @@ const G = {
     e.statuses = [];
     if (danger === 3 && Math.random() < 0.20) {
       e.name  = '⚡ ELITE ' + e.name;
-      e.hp    = Math.round(e.hp  * 1.6);
+      e.hp    = Math.round(e.hp  * 1.8); // Increased from 1.6
       e.maxHp = e.hp;
-      e.atk   = Math.round(e.atk * 1.3);
+      e.atk   = Math.round(e.atk * 1.5); // Increased from 1.3
       e.xp    = Math.round(e.xp  * 1.5);
       e.caps  = Math.round(e.caps * 2);
       e.elite = true;
@@ -1731,7 +1731,7 @@ const G = {
     }
     const template = BOSSES.find(b => b.name === bossName) || BOSSES[0];
     const b = { ...template };
-    const scale = 1 + (s.lv - 1) * 0.14;   // linear — same curve as enemies, just steeper base stats
+    const scale = 1 + (s.lv - 1) * 0.30;   // Increased from 0.14 to 0.30 for much tougher bosses
     b.hp    = Math.round(b.hp  * scale);
     b.atk   = Math.round(b.atk * scale);
     b.maxHp = b.hp;
@@ -1770,7 +1770,7 @@ const G = {
       const extras = [];
       for (let i = 0; i < extraCount; i++) {
         const base = pool[Math.floor(Math.random() * pool.length)];
-        const scale = 1 + (s.lv - 1) * 0.12;
+        const scale = 1 + (s.lv - 1) * 0.25; // Updated to match new enemy scaling
         const ex = { ...base };
         ex.hp = Math.round(ex.hp * scale * 0.8); // mobs in squad are slightly weaker
         ex.atk = Math.round(ex.atk * scale * 0.85);
@@ -3172,7 +3172,7 @@ const G = {
 
   _renderLootItems() {
     const el = document.getElementById('loot-items');
-    const BAG_MAX = 60;
+    const BAG_MAX = 120; // Increased from 60 to handle heavy loot drops
     const bagUsed = this.state.bag.length;
     const bagFree = BAG_MAX - bagUsed;
     const bagFull = bagFree <= 0;
@@ -3257,7 +3257,7 @@ const G = {
   takeLootGroup(gi) {
     const grp = this._lootGroups?.[gi];
     if (!grp) return;
-    const BAG_MAX = 60;
+    const BAG_MAX = 120; // Increased from 60
     const s = this.state;
     const STACKABLE = ['material','consumable','throwable','essence','imbue_stone'];
     const isStackable = STACKABLE.includes(grp.item.type);
@@ -3351,7 +3351,7 @@ const G = {
   toggleLootLock(idx)  { this.toggleLootGroupLock(this._lootGroups?.findIndex(g => g.indices.includes(idx)) ?? -1); },
 
   collectAll() {
-    const BAG_MAX = 60;
+    const BAG_MAX = 120; // Increased from 60
     const s = this.state;
     const available = BAG_MAX - s.bag.length;
     if (available <= 0) {
@@ -3457,7 +3457,7 @@ const G = {
 
   _renderLootBagModal() {
     const s = this.state;
-    const BAG_MAX = 60;
+    const BAG_MAX = 120; // Increased from 60
     const bagUsed = s.bag.length;
     const bagFree = BAG_MAX - bagUsed;
     const bagColor = bagFree <= 5 ? 'var(--red)' : bagFree <= 15 ? 'var(--amber)' : 'var(--green)';
@@ -4993,8 +4993,9 @@ const G = {
     if (s.lv >= 100) return; // hard cap at level 100
     s.lv++;
     s.xp -= s.xpNext;
-    // Slower XP curve: each level costs 300 + level×80 XP (increased from 200 + level×50)
-    s.xpNext = 300 + s.lv * 80;
+    // DRAMATICALLY SLOWER XP curve: each level costs 500 + level×150 XP (was 300 + level×80)
+    // Level 10 = 2,000 XP, Level 50 = 8,000 XP, Level 100 = 15,500 XP
+    s.xpNext = 500 + s.lv * 150;
     s.maxHp += 12; s.hp = Math.min(s.maxHp, s.hp + 12);
     s.str++; s.agi++; s.int++; s.end++; s.lck++;
     s.skillPoints = (s.skillPoints || 0) + 1;
@@ -6039,10 +6040,10 @@ const G = {
     const danger = Math.min(3, Math.floor(Math.hypot(s.playerPos.r - 6, s.playerPos.c - 0) / 2.5) + 1);
     const pool = ENEMIES.filter(e => e.danger <= Math.max(1, danger));
     const base = pool[Math.floor(Math.random() * pool.length)];
-    const scale = 1 + (s.lv - 1) * 0.12;
+    const scale = 1 + (s.lv - 1) * 0.25; // Updated to match new enemy scaling
     const enemy = { ...base };
-    enemy.hp  = Math.round(enemy.hp  * scale * 1.6);
-    enemy.atk = Math.round(enemy.atk * scale * 1.3);
+    enemy.hp  = Math.round(enemy.hp  * scale * 1.8); // Buffed from 1.6
+    enemy.atk = Math.round(enemy.atk * scale * 1.5); // Buffed from 1.3
     enemy.maxHp = enemy.hp;
     enemy.xp    = Math.round(enemy.xp  * 1.5);
     enemy.caps  = Math.round(enemy.caps * 2);
