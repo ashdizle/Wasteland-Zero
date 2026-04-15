@@ -68,7 +68,7 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--green);font-fa
 
 /* START SCREEN */
 #screen-start{justify-content:flex-start;align-items:center;gap:0;padding:0}
-.title-wrap{text-align:center;padding:12px 20px 4px}
+.title-wrap{text-align:center;padding:20px 20px 4px}
 .title-main{font-family:var(--font-title);font-size:3rem;color:var(--green);animation:gpulse 2s ease-in-out infinite;letter-spacing:.05em;line-height:1}
 .title-dagger{font-family:var(--font-title);font-size:2rem;color:var(--amber);animation:aspin 3s linear infinite;display:inline-block}
 .title-zero{font-family:var(--font-title);font-size:2.5rem;color:var(--red);animation:rpulse 1.8s ease-in-out infinite}
@@ -568,9 +568,9 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--green);font-fa
 .vats-chance{color:var(--amber)}
 .vats-effect{color:var(--blue);font-size:.6rem}
 
-/* TITLE ART — round corners */
-.title-art-wrap{width:100%;max-height:60px;overflow:hidden;border-bottom:3px solid var(--green);position:relative;border-radius:0 0 var(--radius-lg) var(--radius-lg)}
-.title-art-img{width:100%;height:60px;object-fit:cover;object-position:center top;display:block;opacity:.85}
+/* TITLE ART — REMOVED (was causing black space) */
+.title-art-wrap{display:none;width:0;height:0;overflow:hidden}
+.title-art-img{display:none}
 
 /* ARCHETYPE PORTRAITS — round cards */
 .arch-card{background:var(--panel);border:var(--comic-border) solid var(--dim);padding:8px;border-radius:var(--radius-lg);cursor:pointer;transition:border-color .15s;box-shadow:3px 3px 0 var(--dim);margin-bottom:6px}

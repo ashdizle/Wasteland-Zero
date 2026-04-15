@@ -78,10 +78,10 @@ const Cosmetics = {
       }
     }
     
-    // Update floating in-game button
-    const floatingGemCount = document.getElementById('floating-gem-count');
-    if (floatingGemCount && this.data) {
-      floatingGemCount.textContent = this.data.total_gems;
+    // Update nav tab gem counter
+    const navGemCount = document.getElementById('nav-gem-count');
+    if (navGemCount && this.data) {
+      navGemCount.textContent = this.data.total_gems;
     }
     
     // Update in shop modal if open
