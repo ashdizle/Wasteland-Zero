@@ -147,13 +147,14 @@ const Cosmetics = {
     if (!content) return;
 
     const mainTabsHTML = `
-      <div class="main-shop-tabs" style="display:flex;gap:8px;margin-bottom:20px;border-bottom:3px solid rgba(212,164,74,0.3);padding-bottom:10px">
+      <div class="main-shop-tabs" style="display:flex;gap:8px;margin-bottom:20px;border-bottom:3px solid rgba(212,164,74,0.3);padding-bottom:10px;align-items:center">
         <button class="main-shop-tab ${this.currentMainTab === 'cosmetics' ? 'active' : ''}" onclick="Cosmetics.switchMainTab('cosmetics')" style="flex:1;font-family:var(--font-title);font-size:1.1rem;padding:12px;background:${this.currentMainTab === 'cosmetics' ? 'rgba(74,222,128,0.2)' : 'rgba(212,164,74,0.1)'};border:2px solid ${this.currentMainTab === 'cosmetics' ? '#4ade80' : '#d4a44a'};color:${this.currentMainTab === 'cosmetics' ? '#4ade80' : '#d4a44a'};border-radius:8px;cursor:pointer;text-transform:uppercase;letter-spacing:0.05em;transition:all 0.2s">
           💎 COSMETICS
         </button>
         <button class="main-shop-tab ${this.currentMainTab === 'store' ? 'active' : ''}" onclick="Cosmetics.switchMainTab('store')" style="flex:1;font-family:var(--font-title);font-size:1.1rem;padding:12px;background:${this.currentMainTab === 'store' ? 'rgba(245,164,66,0.2)' : 'rgba(212,164,74,0.1)'};border:2px solid ${this.currentMainTab === 'store' ? '#f5a442' : '#d4a44a'};color:${this.currentMainTab === 'store' ? '#f5a442' : '#d4a44a'};border-radius:8px;cursor:pointer;text-transform:uppercase;letter-spacing:0.05em;transition:all 0.2s">
           🏪 STORE
         </button>
+        <button onclick="Cosmetics.closeShop()" style="font-family:var(--font-title);font-size:1.8rem;padding:8px 16px;background:rgba(255,59,48,1);border:3px solid #ff3b30;color:white;border-radius:8px;cursor:pointer;font-weight:900;line-height:1;box-shadow:0 4px 12px rgba(255,59,48,0.6);transition:all 0.2s;min-width:60px" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">×</button>
       </div>
     `;
 
