@@ -23,6 +23,8 @@
 <link rel="stylesheet" href="/store.css">
 <link rel="stylesheet" href="/leaderboard.css">
 <link rel="stylesheet" href="/newsletter.css">
+<link rel="stylesheet" href="/prestige.css">
+<link rel="stylesheet" href="/cosmetics.css">
 </head>
 <body>
 <div id="app">
@@ -613,6 +615,22 @@
   </div>
 </div>
 
+<!-- Prestige/Rebirth Modal -->
+<div id="prestige-modal">
+  <div id="prestige-container">
+    <button class="prestige-close" onclick="Prestige.closePrestigeScreen()">×</button>
+    <div id="prestige-content"></div>
+  </div>
+</div>
+
+<!-- Cosmetic Shop Modal -->
+<div id="cosmetics-modal">
+  <div id="cosmetics-container">
+    <button class="cosmetics-close" onclick="Cosmetics.closeShop()">×</button>
+    <div id="cosmetics-content"></div>
+  </div>
+</div>
+
 </div><!-- #app -->
 
 <script>
@@ -625,6 +643,8 @@
 <script src="/store.js"></script>
 <script src="/leaderboard.js"></script>
 <script src="/newsletter.js"></script>
+<script src="/prestige.js"></script>
+<script src="/cosmetics.js"></script>
 <script src="/main.js?v=29d"></script>
 </body>
 </html>
