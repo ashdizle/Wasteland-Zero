@@ -316,9 +316,11 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--green);font-fa
   padding:3px 6px 4px;
   gap:1px;
   flex:1;
-  overflow-y:auto; /* Enable scrolling */
+  overflow-y:scroll !important; /* Force scrolling */
   overflow-x:hidden;
   scroll-behavior:smooth;
+  min-height:80px; /* Ensure minimum height */
+  max-height:120px; /* Cap the height */
 }
 .clog-line{
   display:flex;

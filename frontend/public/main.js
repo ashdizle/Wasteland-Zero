@@ -1675,7 +1675,7 @@ const G = {
 
   // ─── COMBAT ───
   pickEnemy(danger) {
-    const scale = 1 + (this.state.lv - 1) * 0.25; // Increased from 0.12 to 0.25 for better challenge
+    const scale = 1 + (this.state.lv - 1) * 0.15; // Reduced from 0.25 to 0.15 (40% damage reduction)
 
     // 25% chance on danger 2-3 tiles to spawn a mini-boss
     if (danger >= 2 && Math.random() < 0.25) {
@@ -1697,9 +1697,9 @@ const G = {
     e.statuses = [];
     if (danger === 3 && Math.random() < 0.20) {
       e.name  = '⚡ ELITE ' + e.name;
-      e.hp    = Math.round(e.hp  * 1.8); // Increased from 1.6
+      e.hp    = Math.round(e.hp  * 1.5); // Reduced from 1.8
       e.maxHp = e.hp;
-      e.atk   = Math.round(e.atk * 1.5); // Increased from 1.3
+      e.atk   = Math.round(e.atk * 1.3); // Reduced from 1.5
       e.xp    = Math.round(e.xp  * 1.5);
       e.caps  = Math.round(e.caps * 2);
       e.elite = true;
@@ -1731,7 +1731,7 @@ const G = {
     }
     const template = BOSSES.find(b => b.name === bossName) || BOSSES[0];
     const b = { ...template };
-    const scale = 1 + (s.lv - 1) * 0.30;   // Increased from 0.14 to 0.30 for much tougher bosses
+    const scale = 1 + (s.lv - 1) * 0.20;   // Reduced from 0.30 to 0.20 for balanced boss fights
     b.hp    = Math.round(b.hp  * scale);
     b.atk   = Math.round(b.atk * scale);
     b.maxHp = b.hp;
@@ -1770,7 +1770,7 @@ const G = {
       const extras = [];
       for (let i = 0; i < extraCount; i++) {
         const base = pool[Math.floor(Math.random() * pool.length)];
-        const scale = 1 + (s.lv - 1) * 0.25; // Updated to match new enemy scaling
+        const scale = 1 + (s.lv - 1) * 0.15; // Updated to match new enemy scaling
         const ex = { ...base };
         ex.hp = Math.round(ex.hp * scale * 0.8); // mobs in squad are slightly weaker
         ex.atk = Math.round(ex.atk * scale * 0.85);
@@ -3459,6 +3459,13 @@ const G = {
     modal.style.display = 'flex';
   },
 
+  openBagManagement() {
+    // Switch to town shop for selling/salvaging
+    this.show('screen-town');
+    this.toggleTownPanel('shop');
+    this.toast('💰 Sell junk or salvage items at the shop to free up bag space', 2500);
+  },
+
   closeLootBagModal() {
     const modal = document.getElementById('loot-bag-modal');
     if (modal) modal.style.display = 'none';
@@ -4031,7 +4038,19 @@ const G = {
       { id:'celestial', label:'CLSTL',     color:'#ccccff' },
     ];
     const lockedCount = s.bag.filter(it => it.locked).length;
-    html += `<div class="inv-bag-title">🎒 BAG (${s.bag.length} items${lockedCount ? ' · 🔒'+lockedCount+' locked' : ''})</div>`;
+    const BAG_MAX = 120;
+    const bagUsed = s.bag.length;
+    const bagFree = BAG_MAX - bagUsed;
+    const bagFullWarning = bagFree <= 10 ? ` <span style="color:var(--red)">⚠ ${bagFree} slots left</span>` : '';
+    html += `<div class="inv-bag-title">🎒 BAG (${s.bag.length}/${BAG_MAX} items${lockedCount ? ' · 🔒'+lockedCount+' locked' : ''}${bagFullWarning})</div>`;
+    // Show MANAGE BAG button when getting full
+    if (bagFree <= 15) {
+      html += `<div style="padding:4px 0;margin-bottom:6px">
+        <button onclick="G.openBagManagement()" style="width:100%;padding:8px;background:rgba(212,164,74,0.1);border:2px solid #d4a44a;color:#d4a44a;border-radius:6px;cursor:pointer;font-family:var(--font-title);font-size:0.75rem;letter-spacing:0.05em">
+          🎒 MANAGE BAG - ${bagFree <= 5 ? 'CRITICAL' : 'SELL/SALVAGE ITEMS'}
+        </button>
+      </div>`;
+    }
     html += `<div class="inv-filter-bar">`;
     FILTERS.forEach(f => {
       const active = this._invFilter === f.id;
@@ -6067,10 +6086,10 @@ const G = {
     const danger = Math.min(3, Math.floor(Math.hypot(s.playerPos.r - 6, s.playerPos.c - 0) / 2.5) + 1);
     const pool = ENEMIES.filter(e => e.danger <= Math.max(1, danger));
     const base = pool[Math.floor(Math.random() * pool.length)];
-    const scale = 1 + (s.lv - 1) * 0.25; // Updated to match new enemy scaling
+    const scale = 1 + (s.lv - 1) * 0.15; // Updated to match new enemy scaling
     const enemy = { ...base };
-    enemy.hp  = Math.round(enemy.hp  * scale * 1.8); // Buffed from 1.6
-    enemy.atk = Math.round(enemy.atk * scale * 1.5); // Buffed from 1.3
+    enemy.hp  = Math.round(enemy.hp  * scale * 1.5); // Reduced from 1.8
+    enemy.atk = Math.round(enemy.atk * scale * 1.3); // Reduced from 1.5
     enemy.maxHp = enemy.hp;
     enemy.xp    = Math.round(enemy.xp  * 1.5);
     enemy.caps  = Math.round(enemy.caps * 2);
