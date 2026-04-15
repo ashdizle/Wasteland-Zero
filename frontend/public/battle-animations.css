@@ -1,0 +1,283 @@
+/* Battle Animation Enhancements */
+
+/* Screen Shake Effect */
+@keyframes screenShake {
+  0%, 100% { transform: translate(0, 0); }
+  10%, 30%, 50%, 70%, 90% { transform: translate(-10px, 0); }
+  20%, 40%, 60%, 80% { transform: translate(10px, 0); }
+}
+
+.screen-shake {
+  animation: screenShake 0.5s ease-in-out;
+}
+
+/* Hit Flash Effect */
+@keyframes hitFlash {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(2) saturate(2); }
+}
+
+.hit-flash {
+  animation: hitFlash 0.3s ease-in-out;
+}
+
+/* Damage Number Float */
+@keyframes damageFloat {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100px) scale(1.5);
+  }
+}
+
+.damage-number {
+  position: absolute;
+  font-family: 'Bangers', cursive;
+  font-size: 3rem;
+  font-weight: bold;
+  color: #ff3b30;
+  text-shadow: 
+    0 0 10px rgba(255, 59, 48, 0.8),
+    0 0 20px rgba(255, 59, 48, 0.6),
+    2px 2px 0 rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  z-index: 9999;
+  animation: damageFloat 1s ease-out forwards;
+}
+
+.damage-number.crit {
+  font-size: 4rem;
+  color: #fbbf24;
+  text-shadow: 
+    0 0 15px rgba(251, 191, 36, 1),
+    0 0 30px rgba(251, 191, 36, 0.8),
+    2px 2px 0 rgba(0, 0, 0, 0.5);
+}
+
+.damage-number.heal {
+  color: #4ade80;
+  text-shadow: 
+    0 0 10px rgba(74, 222, 128, 0.8),
+    0 0 20px rgba(74, 222, 128, 0.6),
+    2px 2px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* Slash Effect */
+@keyframes slashEffect {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%) scale(0.5) rotate(-45deg);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100%) scale(1.5) rotate(-45deg);
+  }
+}
+
+.slash-effect {
+  position: absolute;
+  width: 200px;
+  height: 5px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.8) 20%, 
+    rgba(255, 255, 255, 1) 50%, 
+    rgba(255, 255, 255, 0.8) 80%, 
+    transparent
+  );
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+  pointer-events: none;
+  z-index: 9998;
+  animation: slashEffect 0.4s ease-out forwards;
+}
+
+/* Impact Effect */
+@keyframes impactEffect {
+  0% {
+    opacity: 1;
+    transform: scale(0);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2);
+  }
+}
+
+.impact-effect {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border: 5px solid #ff3b30;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9997;
+  animation: impactEffect 0.5s ease-out forwards;
+}
+
+/* Blood Splatter Effect */
+@keyframes bloodSplatter {
+  0% {
+    opacity: 1;
+    transform: scale(0.5) rotate(0deg);
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2) rotate(360deg);
+  }
+}
+
+.blood-effect {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background: radial-gradient(circle, #ff3b30 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9996;
+  animation: bloodSplatter 0.8s ease-out forwards;
+}
+
+/* Victory Pulse */
+@keyframes victoryPulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    transform: scale(1.1);
+    filter: brightness(1.5);
+  }
+}
+
+.victory-pulse {
+  animation: victoryPulse 1s ease-in-out infinite;
+}
+
+/* Dice Roll Glow */
+@keyframes diceGlow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(212, 164, 74, 0.3);
+  }
+  50% {
+    box-shadow: 
+      0 0 30px rgba(212, 164, 74, 0.8),
+      0 0 60px rgba(212, 164, 74, 0.6),
+      inset 0 0 20px rgba(212, 164, 74, 0.4);
+  }
+}
+
+.dice-rolling {
+  animation: diceGlow 0.3s ease-in-out infinite;
+}
+
+/* Enemy Attack Warning */
+@keyframes enemyWarning {
+  0%, 100% {
+    border-color: rgba(255, 59, 48, 0.3);
+    box-shadow: 0 0 10px rgba(255, 59, 48, 0.2);
+  }
+  50% {
+    border-color: rgba(255, 59, 48, 1);
+    box-shadow: 0 0 30px rgba(255, 59, 48, 0.8);
+  }
+}
+
+.enemy-attacking {
+  animation: enemyWarning 0.5s ease-in-out 3;
+}
+
+/* Level Up Burst */
+@keyframes levelUpBurst {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(3) rotate(360deg);
+  }
+}
+
+.level-up-effect {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  border: 10px solid #fbbf24;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  animation: levelUpBurst 1s ease-out forwards;
+}
+
+/* Button Press Effect */
+@keyframes buttonPress {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+}
+
+.button-pressed {
+  animation: buttonPress 0.2s ease-in-out;
+}
+
+/* Health Bar Damage Flash */
+@keyframes healthDamage {
+  0%, 100% {
+    background-color: var(--red);
+  }
+  50% {
+    background-color: #ff0000;
+    filter: brightness(1.5);
+  }
+}
+
+.health-damage-flash {
+  animation: healthDamage 0.5s ease-in-out;
+}
+
+/* Miss/Dodge Effect */
+@keyframes missEffect {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-50px) scale(1.2);
+  }
+}
+
+.miss-text {
+  position: absolute;
+  font-family: 'Bangers', cursive;
+  font-size: 2rem;
+  color: #a8c4d4;
+  text-shadow: 
+    0 0 10px rgba(168, 196, 212, 0.8),
+    2px 2px 0 rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  z-index: 9999;
+  animation: missEffect 1s ease-out forwards;
+}

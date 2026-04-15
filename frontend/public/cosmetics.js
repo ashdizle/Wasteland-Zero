@@ -96,6 +96,20 @@ const Cosmetics = {
     if (modal) {
       modal.style.display = 'flex';
       this.renderShop();
+      
+      // Setup scroll detection for back-to-top button
+      const container = document.getElementById('cosmetics-container');
+      const backToTopBtn = document.getElementById('back-to-top');
+      
+      if (container && backToTopBtn) {
+        container.addEventListener('scroll', () => {
+          if (container.scrollTop > 300) {
+            backToTopBtn.classList.add('show');
+          } else {
+            backToTopBtn.classList.remove('show');
+          }
+        });
+      }
     }
   },
 

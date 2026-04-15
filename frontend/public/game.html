@@ -25,6 +25,7 @@
 <link rel="stylesheet" href="/newsletter.css">
 <link rel="stylesheet" href="/prestige.css">
 <link rel="stylesheet" href="/cosmetics.css">
+<link rel="stylesheet" href="/battle-animations.css">
 </head>
 <body>
 <div id="app">
@@ -732,6 +733,7 @@
 <div id="cosmetics-modal">
   <div id="cosmetics-container">
     <button class="cosmetics-close" onclick="Cosmetics.closeShop()">×</button>
+    <button class="back-to-top-btn" id="back-to-top" onclick="document.getElementById('cosmetics-container').scrollTo({top: 0, behavior: 'smooth'})">↑</button>
     <div id="cosmetics-content"></div>
   </div>
 </div>

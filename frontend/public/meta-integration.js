@@ -272,3 +272,174 @@ resolveRift(choice) {
 
 console.log('Prestige & Cosmetics integration template loaded');
 console.log('See comments above for integration instructions');
+
+// ═══════════════════════════════════════════════════════════════
+// BATTLE ANIMATION HELPERS
+// ═══════════════════════════════════════════════════════════════
+
+const BattleAnimations = {
+  // Show floating damage number
+  showDamage(amount, isCrit = false, isHeal = false, targetElement = null) {
+    const damageNum = document.createElement('div');
+    damageNum.className = 'damage-number';
+    if (isCrit) damageNum.classList.add('crit');
+    if (isHeal) damageNum.classList.add('heal');
+    
+    damageNum.textContent = (isHeal ? '+' : '-') + amount;
+    
+    // Position near target or center
+    if (targetElement) {
+      const rect = targetElement.getBoundingClientRect();
+      damageNum.style.left = rect.left + (rect.width / 2) + 'px';
+      damageNum.style.top = rect.top + 'px';
+    } else {
+      damageNum.style.left = '50%';
+      damageNum.style.top = '40%';
+    }
+    
+    document.body.appendChild(damageNum);
+    
+    setTimeout(() => damageNum.remove(), 1000);
+  },
+  
+  // Screen shake effect
+  screenShake() {
+    const gameScreen = document.querySelector('.screen.active') || document.body;
+    gameScreen.classList.add('screen-shake');
+    setTimeout(() => gameScreen.classList.remove('screen-shake'), 500);
+  },
+  
+  // Hit flash effect
+  hitFlash(element) {
+    if (!element) element = document.querySelector('.screen.active');
+    element.classList.add('hit-flash');
+    setTimeout(() => element.classList.remove('hit-flash'), 300);
+  },
+  
+  // Slash effect
+  slashEffect(targetElement) {
+    const slash = document.createElement('div');
+    slash.className = 'slash-effect';
+    
+    if (targetElement) {
+      const rect = targetElement.getBoundingClientRect();
+      slash.style.left = rect.left + 'px';
+      slash.style.top = rect.top + (rect.height / 2) + 'px';
+    } else {
+      slash.style.left = '50%';
+      slash.style.top = '50%';
+    }
+    
+    document.body.appendChild(slash);
+    setTimeout(() => slash.remove(), 400);
+  },
+  
+  // Impact effect
+  impactEffect(targetElement) {
+    const impact = document.createElement('div');
+    impact.className = 'impact-effect';
+    
+    if (targetElement) {
+      const rect = targetElement.getBoundingClientRect();
+      impact.style.left = rect.left + (rect.width / 2) - 50 + 'px';
+      impact.style.top = rect.top + (rect.height / 2) - 50 + 'px';
+    } else {
+      impact.style.left = 'calc(50% - 50px)';
+      impact.style.top = 'calc(50% - 50px)';
+    }
+    
+    document.body.appendChild(impact);
+    setTimeout(() => impact.remove(), 500);
+  },
+  
+  // Blood splatter
+  bloodEffect(targetElement, count = 3) {
+    for (let i = 0; i < count; i++) {
+      setTimeout(() => {
+        const blood = document.createElement('div');
+        blood.className = 'blood-effect';
+        
+        if (targetElement) {
+          const rect = targetElement.getBoundingClientRect();
+          const randomX = rect.left + Math.random() * rect.width;
+          const randomY = rect.top + Math.random() * rect.height;
+          blood.style.left = randomX + 'px';
+          blood.style.top = randomY + 'px';
+        }
+        
+        document.body.appendChild(blood);
+        setTimeout(() => blood.remove(), 800);
+      }, i * 100);
+    }
+  },
+  
+  // Miss/Dodge text
+  showMiss(targetElement) {
+    const miss = document.createElement('div');
+    miss.className = 'miss-text';
+    miss.textContent = 'MISS!';
+    
+    if (targetElement) {
+      const rect = targetElement.getBoundingClientRect();
+      miss.style.left = rect.left + (rect.width / 2) + 'px';
+      miss.style.top = rect.top + 'px';
+    } else {
+      miss.style.left = '50%';
+      miss.style.top = '40%';
+    }
+    
+    document.body.appendChild(miss);
+    setTimeout(() => miss.remove(), 1000);
+  },
+  
+  // Level up effect
+  levelUp() {
+    const burst = document.createElement('div');
+    burst.className = 'level-up-effect';
+    document.body.appendChild(burst);
+    setTimeout(() => burst.remove(), 1000);
+  },
+  
+  // Combo: Full attack animation
+  attackCombo(damage, isCrit, targetElement) {
+    this.slashEffect(targetElement);
+    setTimeout(() => {
+      this.impactEffect(targetElement);
+      this.hitFlash(targetElement);
+      this.screenShake();
+      this.showDamage(damage, isCrit, false, targetElement);
+      if (damage > 10) this.bloodEffect(targetElement, 3);
+    }, 200);
+  }
+};
+
+// Make globally available
+window.BattleAnimations = BattleAnimations;
+
+// ═══════════════════════════════════════════════════════════════
+// EXAMPLE USAGE IN COMBAT
+// ═══════════════════════════════════════════════════════════════
+
+/*
+// When player attacks enemy:
+BattleAnimations.attackCombo(15, false, enemyElement);
+
+// When enemy takes critical hit:
+BattleAnimations.attackCombo(30, true, enemyElement);
+
+// When attack misses:
+BattleAnimations.showMiss(enemyElement);
+
+// When player heals:
+BattleAnimations.showDamage(20, false, true, playerElement);
+
+// When player levels up:
+BattleAnimations.levelUp();
+
+// Simple damage without full combo:
+BattleAnimations.showDamage(12, false, false, enemyElement);
+BattleAnimations.screenShake();
+*/
+
+console.log('Battle Animations system loaded');
+console.log('Use window.BattleAnimations to trigger effects');
