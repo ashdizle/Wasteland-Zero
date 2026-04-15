@@ -87,6 +87,11 @@
 
 <!-- HUD -->
 <div id="hud" style="display:none">
+  <!-- Floating Shop Button (In-Game) -->
+  <button onclick="Cosmetics.openShop()" class="floating-shop-btn" title="Open Shop">
+    💎 <span id="floating-gem-count">0</span>
+  </button>
+  
   <div class="hud-row">
     <div class="hud-avatar-wrap">
       <img id="hud-avatar" class="hud-avatar" alt="" onerror="this.style.opacity='0'" onload="this.style.opacity='1'">
@@ -151,11 +156,106 @@
     </div>
     <div style="display:flex;gap:8px;width:calc(100% - 24px);max-width:316px;margin-top:8px">
       <button onclick="Prestige.openPrestigeScreen()" style="font-family:var(--font-title);font-size:.75rem;letter-spacing:.06em;padding:10px 14px;min-height:40px;border:2px solid #fbbf24;background:rgba(251,191,36,.06);color:#fbbf24;cursor:pointer;border-radius:12px;font-weight:900;text-transform:uppercase;box-shadow:0 3px 0 rgba(251,191,36,.3);flex:1">🏆 PRESTIGE</button>
-      <button onclick="Cosmetics.openShop()" style="font-family:var(--font-title);font-size:.75rem;letter-spacing:.06em;padding:10px 14px;min-height:40px;border:2px solid #4ade80;background:rgba(74,222,128,.06);color:#4ade80;cursor:pointer;border-radius:12px;font-weight:900;text-transform:uppercase;box-shadow:0 3px 0 rgba(74,222,128,.3);flex:1">💎 SHOP</button>
+      <button onclick="Cosmetics.openShop()" class="shop-btn-snazzy" style="font-family:var(--font-title);font-size:.75rem;letter-spacing:.06em;padding:10px 14px;min-height:40px;border:2px solid #4ade80;background:linear-gradient(135deg, rgba(74,222,128,.15), rgba(74,222,128,.05));color:#4ade80;cursor:pointer;border-radius:12px;font-weight:900;text-transform:uppercase;box-shadow:0 3px 0 rgba(74,222,128,.3), 0 0 20px rgba(74,222,128,.3);flex:1;position:relative;overflow:hidden;animation:shopPulse 2s ease-in-out infinite">💎 SHOP</button>
     </div>
-    <div id="gem-count" style="margin-top:12px;display:inline-flex;align-items:center;gap:8px;background:rgba(74,222,128,0.1);border:2px solid #4ade80;border-radius:8px;padding:8px 16px;font-weight:900;color:#4ade80;font-size:1.1rem;cursor:pointer" onclick="Cosmetics.openShop()">💎 <span id="gem-amount">0</span></div>
+    <div id="gem-count" style="margin-top:12px;display:inline-flex;align-items:center;gap:8px;background:rgba(74,222,128,0.1);border:2px solid #4ade80;border-radius:8px;padding:8px 16px;font-weight:900;color:#4ade80;font-size:1.1rem;cursor:pointer;animation:gemShine 3s ease-in-out infinite" onclick="Cosmetics.openShop()">💎 <span id="gem-amount">0</span></div>
   </div>
 </div>
+
+<style>
+@keyframes shopPulse {
+  0%, 100% { 
+    transform: scale(1); 
+    box-shadow: 0 3px 0 rgba(74,222,128,.3), 0 0 20px rgba(74,222,128,.3);
+  }
+  50% { 
+    transform: scale(1.05); 
+    box-shadow: 0 3px 0 rgba(74,222,128,.5), 0 0 30px rgba(74,222,128,.6), 0 0 40px rgba(74,222,128,.4);
+  }
+}
+
+@keyframes gemShine {
+  0%, 100% { box-shadow: 0 0 10px rgba(74,222,128,.3); }
+  50% { box-shadow: 0 0 25px rgba(74,222,128,.6), 0 0 35px rgba(74,222,128,.4); }
+}
+
+@keyframes shopShake {
+  0%, 100% { transform: translateX(0) scale(1); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-2px) scale(1.02); }
+  20%, 40%, 60%, 80% { transform: translateX(2px) scale(1.02); }
+}
+
+.shop-btn-snazzy:hover {
+  animation: shopShake 0.5s ease-in-out, shopPulse 2s ease-in-out infinite !important;
+  background: linear-gradient(135deg, rgba(74,222,128,.25), rgba(74,222,128,.1)) !important;
+}
+
+.shop-btn-snazzy::before {
+  content: '✨';
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  font-size: 1.2rem;
+  animation: sparkle 1.5s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.2) rotate(180deg); }
+}
+
+/* Floating In-Game Shop Button */
+.floating-shop-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, rgba(74,222,128,.9), rgba(74,222,128,.7));
+  border: 3px solid #4ade80;
+  border-radius: 50px;
+  color: #1a1410;
+  font-family: var(--font-title);
+  font-size: 1.1rem;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(74,222,128,.4), 0 0 30px rgba(74,222,128,.3);
+  animation: shopPulse 2s ease-in-out infinite, shopFloat 3s ease-in-out infinite;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.floating-shop-btn:hover {
+  transform: scale(1.1) translateY(-2px);
+  box-shadow: 0 6px 25px rgba(74,222,128,.6), 0 0 40px rgba(74,222,128,.5);
+  animation: shopShake 0.5s ease-in-out, shopFloat 3s ease-in-out infinite;
+}
+
+.floating-shop-btn:active {
+  transform: scale(0.95);
+}
+
+@keyframes shopFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
+
+#floating-gem-count {
+  font-weight: 900;
+  font-size: 1.2rem;
+}
+
+@media (max-width: 768px) {
+  .floating-shop-btn {
+    top: 10px;
+    right: 10px;
+    padding: 10px 16px;
+    font-size: 1rem;
+  }
+}
+</style>
 
 <!-- RACE SELECT -->
 <div id="screen-race" class="screen">

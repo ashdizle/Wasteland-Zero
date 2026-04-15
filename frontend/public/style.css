@@ -1683,13 +1683,13 @@ button,a,.tile,.dpad-btn,.nav-tab,.btn,.arch-card,.bag-item,.skill-node,.vats-ta
 }
 .combat-actions.locked{ pointer-events:none; opacity:0.45; transition:opacity .3s; }
 
-.dice-d20-wrap{ margin:6px 0;position:relative;padding:20px 16px; }
+.dice-d20-wrap{ margin:6px 0;position:relative;padding:20px 16px;overflow:hidden; }
 .dice-face{
   width:120px;height:120px;background:#1a2a1a;
   border:3px solid var(--amber);border-radius:18px;
   display:flex;align-items:center;justify-content:center;
   font-family:var(--font-title);font-size:3rem;color:#fff;
-  box-shadow:none;overflow:visible;
+  box-shadow:none;overflow:hidden;
   transition:border-color .3s,box-shadow .3s;
 }
 .dice-face.rolling{ box-shadow:none; }
