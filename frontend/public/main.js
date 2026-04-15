@@ -4063,6 +4063,8 @@ const G = {
       };
       const tierBad = TIER_BAD[isJunk ? 'junk' : (it.tier || 'common')];
       const tierLabel = isJunk ? 'JUNK' : (it.tier || 'common').toUpperCase();
+      // Hide tier badge for consumables and throwables (they don't have meaningful tiers)
+      const showTierBadge = it.type !== 'consumable' && it.type !== 'throwable';
       // Subline
       const statLine = this.itemStatLine(it);
       const skillLine = (it.skill && it.skillDesc) ? `<div class="bag-item-sub" style="color:var(--amber)">✦ ${it.skillDesc}</div>` : '';
@@ -4073,7 +4075,7 @@ const G = {
         <div class="bag-item-content" onclick="G.showItemDetail(${gi},'bag')">
           <div class="bag-item-name-row">
             <div class="bag-item-name ${bagRainbow}" style="${bagCelestial ? '' : `color:${isJunk ? '#aaaaaa' : (it.tierColor || 'var(--green)')}`}">${isLocked ? '🔒 ' : ''}${bagUnique ? '◆ ' : ''}${bagCelestial ? '★ ' : ''}${it.name}${countBadge}</div>
-            <div class="bag-item-tier-badge" style="color:${tierBad.col};border-color:${tierBad.col}55;background:${tierBad.bg}">${tierLabel}</div>
+            ${showTierBadge ? `<div class="bag-item-tier-badge" style="color:${tierBad.col};border-color:${tierBad.col}55;background:${tierBad.bg}">${tierLabel}</div>` : ''}
           </div>
           ${statLine ? `<div class="bag-item-stats">${statLine}</div>` : ''}
           ${skillLine}${perkLine}
@@ -6327,7 +6329,16 @@ const G = {
     if (unlocked.includes(id)) return; // already earned
     unlocked.push(id);
     localStorage.setItem('wzAchievements', JSON.stringify(unlocked));
-    // Toast notification
+    // Toast notification - make it clickable to open achievements
+    const toastEl = document.getElementById('toast');
+    if (toastEl) {
+      toastEl.style.cursor = 'pointer';
+      toastEl.onclick = () => {
+        toastEl.onclick = null;
+        toastEl.style.cursor = 'default';
+        this.openAchievements();
+      };
+    }
     this.toast(`🏆 ACHIEVEMENT: ${def.icon} ${def.name}`, 3200);
     AudioEngine.sfx.win && AudioEngine.sfx.win();
     // ── Grant reward ──────────────────────────────────────────────

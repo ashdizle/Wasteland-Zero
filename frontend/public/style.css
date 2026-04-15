@@ -1683,14 +1683,23 @@ button,a,.tile,.dpad-btn,.nav-tab,.btn,.arch-card,.bag-item,.skill-node,.vats-ta
 }
 .combat-actions.locked{ pointer-events:none; opacity:0.45; transition:opacity .3s; }
 
-.dice-d20-wrap{ margin:6px 0;position:relative;padding:20px 16px;overflow:hidden; }
+.dice-d20-wrap{ 
+  margin:6px 0;
+  position:relative;
+  padding:20px 16px;
+  overflow:visible; /* Changed from hidden to allow proper rendering */
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
 .dice-face{
   width:120px;height:120px;background:#1a2a1a;
   border:3px solid var(--amber);border-radius:18px;
   display:flex;align-items:center;justify-content:center;
   font-family:var(--font-title);font-size:3rem;color:#fff;
-  box-shadow:none;overflow:hidden;
+  box-shadow:none;
   transition:border-color .3s,box-shadow .3s;
+  flex-shrink:0; /* Prevent dice from shrinking */
 }
 .dice-face.rolling{ box-shadow:none; }
 .dice-face.success{border-color:#44ee88;box-shadow:0 0 30px rgba(68,238,136,.45),inset 0 0 20px rgba(0,0,0,.5);}

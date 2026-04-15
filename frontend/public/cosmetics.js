@@ -162,10 +162,6 @@ const Cosmetics = {
       content.innerHTML = mainTabsHTML + `
         <div class="shop-header">
           <h2>💎 COSMETIC SHOP</h2>
-          <div class="gem-balance">
-            <span class="gem-icon">💎</span>
-            <span class="gem-amount">${this.data.total_gems}</span> Gems
-          </div>
         </div>
 
         <div class="shop-tabs">
