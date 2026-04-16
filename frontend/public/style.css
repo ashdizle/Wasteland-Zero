@@ -923,7 +923,7 @@ button,a,.tile,.dpad-btn,.nav-tab,.btn,.arch-card,.bag-item,.skill-node,.vats-ta
 .merchant-icon{font-size:3rem;text-align:center}
 .merchant-title{font-family:var(--font-title);font-size:1.5rem;color:var(--amber);letter-spacing:.1em;text-align:center}
 .merchant-items{background:var(--panel);border:var(--comic-border) solid var(--amber);border-radius:var(--radius-lg);padding:12px;width:100%;max-width:340px;display:flex;flex-direction:column;gap:5px}
-.merchant-sell-header{font-family:var(--font-title);font-size:.72rem;color:var(--amber);letter-spacing:.08em;margin:10px 0 4px;width:100%;max-width:340px;text-align:left;border-top:1px solid #362a1a;padding-top:8px}
+.merchant-sell-header{font-family:var(--font-title);font-size:1rem;color:var(--amber);letter-spacing:.08em;margin:10px 0 4px;width:100%;max-width:340px;text-align:left;border-top:1px solid #362a1a;padding-top:8px}
 .merchant-sell-list{background:var(--panel);border:var(--comic-border) solid #362a1a;border-radius:var(--radius-lg);padding:8px;width:100%;max-width:340px;display:flex;flex-direction:column;gap:4px;max-height:160px;overflow-y:auto}
 .merchant-btns{width:100%;max-width:340px;display:flex;flex-direction:column;gap:8px;margin-top:4px}
 
