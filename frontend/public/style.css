@@ -579,9 +579,9 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--green);font-fa
 .vats-chance{color:var(--amber)}
 .vats-effect{color:var(--blue);font-size:.6rem}
 
-/* TITLE ART — REMOVED (was causing black space) */
-.title-art-wrap{display:none;width:0;height:0;overflow:hidden}
-.title-art-img{display:none}
+/* TITLE ART — Re-enabled with radiation barrel image */
+.title-art-wrap{width:100%;max-height:120px;overflow:hidden;border-bottom:3px solid var(--green);position:relative;border-radius:0 0 var(--radius-lg) var(--radius-lg);display:block}
+.title-art-img{width:100%;height:120px;object-fit:cover;object-position:center center;display:block;opacity:.85}
 
 /* ARCHETYPE PORTRAITS — round cards */
 .arch-card{background:var(--panel);border:var(--comic-border) solid var(--dim);padding:8px;border-radius:var(--radius-lg);cursor:pointer;transition:border-color .15s;box-shadow:3px 3px 0 var(--dim);margin-bottom:6px}

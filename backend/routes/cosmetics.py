@@ -21,7 +21,8 @@ COSMETIC_ITEMS = {
         "type": "character_skin",
         "price_gems": 150,
         "rarity": "common",
-        "bonus": None
+        "bonus": None,
+        "image_url": "https://static.prod-images.emergentagent.com/jobs/3becbc62-8434-4b58-a029-bb6ede10efaa/images/951da142c627f7f1b85f6bff9dfecf08e0bdacf4245c13b8781930bd4fe015dc.png"
     },
     "skin_raider": {
         "name": "Raider Lord",
@@ -29,7 +30,8 @@ COSMETIC_ITEMS = {
         "type": "character_skin",
         "price_gems": 200,
         "rarity": "uncommon",
-        "bonus": None
+        "bonus": None,
+        "image_url": "https://static.prod-images.emergentagent.com/jobs/3becbc62-8434-4b58-a029-bb6ede10efaa/images/e16f1c25a21fb4732d720a4d90d68ea73fa482a3aa604c1183e1d49dff9d84cd.png"
     },
     "skin_ghoul": {
         "name": "Ghoulish Horror",
@@ -37,7 +39,8 @@ COSMETIC_ITEMS = {
         "type": "character_skin",
         "price_gems": 250,
         "rarity": "rare",
-        "bonus": None
+        "bonus": None,
+        "image_url": "https://static.prod-images.emergentagent.com/jobs/3becbc62-8434-4b58-a029-bb6ede10efaa/images/a1c46cbf4661e9f8e82ae3fbfc23e0976af954ad086257698d45d274ffa9aca9.png"
     },
     
     # Dice Skins (Pure Cosmetic)

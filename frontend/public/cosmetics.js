@@ -337,7 +337,10 @@ const Cosmetics = {
           <div class="rarity-badge">${rarityEmoji} ${item.rarity?.toUpperCase()}</div>
           ${isEquipped ? '<div class="equipped-badge">✓ EQUIPPED</div>' : ''}
           
-          <div class="item-icon">${this.getItemIcon(item.type)}</div>
+          <div class="item-icon">${item.image_url ? 
+            `<img src="${item.image_url}" style="width:120px;height:120px;object-fit:cover;border-radius:12px" alt="${item.name}">` : 
+            this.getItemIcon(item.type)
+          }</div>
           <div class="item-name">${item.name}</div>
           <div class="item-desc">${item.description}</div>
           
