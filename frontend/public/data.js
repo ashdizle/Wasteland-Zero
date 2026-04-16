@@ -1128,7 +1128,7 @@ const ACHIEVEMENTS = [
    difficulty:'diamond', reward:{ caps:2000, xp:500, tier:'legendary' }},
 ];
 
-const TITLE_ART='https://static.prod-images.emergentagent.com/jobs/3becbc62-8434-4b58-a029-bb6ede10efaa/images/0936098f3acea8603110d7b6f7076a885b6d4a462241ee7bcf701d2fe965f8e8.png';
+const TITLE_ART='/title_art_new.png';
 const TOWN_ART='/town_art.png';
 
 // ─── CHARACTER TRAITS ─────────────────────────────
