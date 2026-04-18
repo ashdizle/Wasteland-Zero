@@ -1,7 +1,7 @@
 {
   "appId": "com.wastelandzero.app",
   "appName": "Wasteland Zero",
-  "webDir": "public",
+  "webDir": "frontend/public",
   "server": {
     "url": "https://panel-adventure.preview.emergentagent.com",
     "cleartext": true
