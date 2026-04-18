@@ -5511,7 +5511,7 @@ const G = {
         </div>
         <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
           <span style="font-size:.65rem;color:var(--amber);white-space:nowrap">${price}💰</span>
-          <button style="background:var(--amber);color:#1a1410;border:none;border-radius:8px;padding:5px 10px;font-family:var(--font-title);font-size:.7rem;min-height:36px;cursor:pointer" onclick="G.sellItem(${i})">SELL</button>
+          <button style="background:var(--amber);color:#1a1410;border:none;border-radius:8px;padding:7px 14px;font-family:var(--font-title);font-size:.82rem;min-height:44px;cursor:pointer;font-weight:900" onclick="G.sellItem(${i})">SELL</button>
         </div>
       </div>`;
     }).join('');
@@ -6964,3 +6964,11 @@ if (typeof Store !== 'undefined' && Store.hasActiveBenefit && Store.hasActiveBen
   const badge = document.getElementById('emergent-badge');
   if (badge) badge.style.display = 'none';
 }
+
+// ═══ BACKGROUND AUDIO FIX ═══
+// Stop audio when tab is hidden/inactive to prevent background audio
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    AudioEngine.stop();
+  }
+});

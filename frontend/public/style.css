@@ -404,7 +404,7 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--green);font-fa
 .shop-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--dim);font-size:.65rem;gap:6px}
 .shop-row:last-child{border-bottom:none}
 .shop-item-info{flex:1}
-.shop-buy-btn{font-family:var(--font-title);font-size:.75rem;padding:4px 10px;min-height:32px;border:2px solid var(--amber);background:transparent;color:var(--amber);cursor:pointer;border-radius:var(--radius-sm)}
+.shop-buy-btn{font-family:var(--font-title);font-size:.85rem;padding:6px 14px;min-height:40px;border:2px solid var(--amber);background:transparent;color:var(--amber);cursor:pointer;border-radius:var(--radius-sm);font-weight:900}
 .shop-buy-btn:hover{background:var(--amber);color:var(--bg)}
 .shop-buy-btn:disabled{opacity:.3;cursor:default}
 
@@ -582,6 +582,8 @@ html,body{width:100%;height:100%;background:var(--bg);color:var(--green);font-fa
 /* TITLE ART — Re-enabled with radiation barrel image */
 .title-art-wrap{width:100%;max-height:120px;overflow:hidden;border-bottom:3px solid var(--green);position:relative;border-radius:0 0 var(--radius-lg) var(--radius-lg);display:block}
 .title-art-img{width:100%;height:120px;object-fit:cover;object-position:center center;display:block;opacity:.85}
+.barrel-overlay{position:absolute;top:10px;right:15px;width:90px;height:90px;object-fit:contain;opacity:.95;filter:drop-shadow(0 0 12px rgba(74,222,128,.6));animation:barrelGlow 2.5s ease-in-out infinite}
+@keyframes barrelGlow{0%,100%{filter:drop-shadow(0 0 12px rgba(74,222,128,.6))}50%{filter:drop-shadow(0 0 24px rgba(74,222,128,.9)) drop-shadow(0 0 32px rgba(74,222,128,.5))}}
 
 /* ARCHETYPE PORTRAITS — round cards */
 .arch-card{background:var(--panel);border:var(--comic-border) solid var(--dim);padding:8px;border-radius:var(--radius-lg);cursor:pointer;transition:border-color .15s;box-shadow:3px 3px 0 var(--dim);margin-bottom:6px}
@@ -671,7 +673,7 @@ button,a,.tile,.dpad-btn,.nav-tab,.btn,.arch-card,.bag-item,.skill-node,.vats-ta
 
 /* Raise touch targets: small utility buttons to 40px minimum */
 .slot-btn { min-height:36px; padding:4px 8px; font-size:.6rem }
-.shop-buy-btn { min-height:40px; padding:6px 14px; font-size:.78rem }
+.shop-buy-btn { min-height:44px; padding:7px 16px; font-size:.9rem }
 .skill-unlock-btn { min-height:40px; padding:6px 12px }
 .aoe-btn { min-height:40px }
 .guide-close-btn { min-height:40px; padding:6px 16px }
@@ -921,9 +923,9 @@ button,a,.tile,.dpad-btn,.nav-tab,.btn,.arch-card,.bag-item,.skill-node,.vats-ta
 #merchant-modal{position:absolute;inset:0;background:rgba(0,0,0,.92);display:none;flex-direction:column;justify-content:center;align-items:center;gap:10px;z-index:300;padding:20px;overflow-y:auto}
 #merchant-modal.show{display:flex}
 .merchant-icon{font-size:3rem;text-align:center}
-.merchant-title{font-family:var(--font-title);font-size:1.5rem;color:var(--amber);letter-spacing:.1em;text-align:center}
+.merchant-title{font-family:var(--font-title);font-size:1.7rem;color:var(--amber);letter-spacing:.1em;text-align:center}
 .merchant-items{background:var(--panel);border:var(--comic-border) solid var(--amber);border-radius:var(--radius-lg);padding:12px;width:100%;max-width:340px;display:flex;flex-direction:column;gap:5px}
-.merchant-sell-header{font-family:var(--font-title);font-size:1rem;color:var(--amber);letter-spacing:.08em;margin:10px 0 4px;width:100%;max-width:340px;text-align:left;border-top:1px solid #362a1a;padding-top:8px}
+.merchant-sell-header{font-family:var(--font-title);font-size:1.2rem;color:var(--amber);letter-spacing:.08em;margin:12px 0 6px;width:100%;max-width:340px;text-align:left;border-top:2px solid #362a1a;padding-top:10px}
 .merchant-sell-list{background:var(--panel);border:var(--comic-border) solid #362a1a;border-radius:var(--radius-lg);padding:8px;width:100%;max-width:340px;display:flex;flex-direction:column;gap:4px;max-height:160px;overflow-y:auto}
 .merchant-btns{width:100%;max-width:340px;display:flex;flex-direction:column;gap:8px;margin-top:4px}
 
