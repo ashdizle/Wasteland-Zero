@@ -4,7 +4,7 @@
   "description": "Wasteland Zero - Root workspace",
   "private": true,
   "scripts": {
-    "postinstall": "cd frontend && yarn install",
+    "postinstall": "cd frontend && yarn install && cd ../ios/App && pod install",
     "build": "cd frontend && yarn build",
     "cap:sync": "cd frontend && npx cap sync ios"
   },
