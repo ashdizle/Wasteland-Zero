@@ -1,0 +1,10 @@
+appflow:
+  build:
+    # Set the root directory to 'frontend' where package.json and Capacitor project live
+    root: frontend
+    
+  environments:
+    production:
+      build:
+        target: app-store
+        platform: ios

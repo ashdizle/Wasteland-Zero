@@ -1,0 +1,9 @@
+{
+  "name": "Wasteland Zero",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "custom",
+  "id": "wasteland-zero",
+  "root": "frontend"
+}
