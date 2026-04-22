@@ -287,26 +287,39 @@ All countries
 
 ## 📋 IN-APP PURCHASES (Reference)
 
-You have these in your game:
+You now have these products in your game:
 
-### Premium
+### Premium (Non-Consumable)
 1. **Wasteland Zero Premium** - $4.99
    - Product ID: `premium_unlock`
    - Type: Non-Consumable
    - Benefits: Remove branding, exclusive title screen, priority support
 
-### Boosts (Consumable)
+### Individual Boosts (Consumable - 24h duration)
 2. **24h XP Boost** - $0.99
    - Product ID: `xp_boost_24h`
    - Type: Consumable
    - Benefits: +50% XP gain for 24 hours
 
-3. **Mega Boost Bundle** - $1.99
+3. **24h Loot Boost** - $0.99
+   - Product ID: `loot_boost_24h`
+   - Type: Consumable
+   - Benefits: +25% better loot quality for 24 hours
+
+4. **24h Caps Boost** - $0.99
+   - Product ID: `caps_boost_24h`
+   - Type: Consumable
+   - Benefits: +50% currency drops for 24 hours
+
+### Bundle (Consumable - Best Value!)
+5. **Mega Boost Bundle** - $1.99
    - Product ID: `mega_boost_bundle`
    - Type: Consumable
-   - Benefits: All 3 boosts (XP, Loot, Caps) for 24h - Save 33%!
+   - Benefits: All 3 boosts (XP, Loot, Caps) for 24h - **Save 33%!**
 
-**Note:** Your game uses Stripe for payments, which is perfect for web/cross-platform. For iOS App Store, you'll need to integrate Apple IAP for these same products (Apple requires this for digital goods sold in iOS apps).
+**Total: 5 IAP products**
+
+**Important Note:** Your game currently uses Stripe for payments (perfect for web). For iOS App Store submission, Apple requires you to use Apple IAP for digital goods. You'll need to configure these same products in App Store Connect → In-App Purchases section.
 
 *(Configure these in App Store Connect → Features → In-App Purchases)*
 

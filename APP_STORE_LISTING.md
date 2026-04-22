@@ -152,9 +152,13 @@ https://wastelandzero.com/privacy
 ### Premium
 1. **Wasteland Zero Premium** - $4.99 - Remove branding, exclusive title screen, priority support
 
-### Boosts (Convenience, NOT Pay-to-Win)
+### Individual Boosts (24 hours each)
 2. **24h XP Boost** - $0.99 - +50% XP gain for 24 hours
-3. **Mega Boost Bundle** - $1.99 - All 3 boosts (XP, Loot, Caps) for 24h - Save 33%!
+3. **24h Loot Boost** - $0.99 - +25% better loot quality for 24 hours
+4. **24h Caps Boost** - $0.99 - +50% currency drops for 24 hours
+
+### Bundle (Best Value!)
+5. **Mega Boost Bundle** - $1.99 - All 3 boosts for 24h - **Save 33%!**
 
 **All IAP are optional. The full game is playable for free.**  
 **All purchases processed securely via Stripe.**

@@ -6822,15 +6822,29 @@ G.showStore = function() {
           
           <div style="display:flex;flex-direction:column;gap:12px">
             <div style="background:linear-gradient(145deg,rgba(76,29,149,0.2) 0%,rgba(30,27,75,0.3) 100%);border:2px solid rgba(167,139,250,0.4);border-radius:8px;padding:14px">
-              <h4 style="font-family:var(--font-mono);font-size:1rem;color:#f5d742;margin:0 0 6px">24h XP Boost</h4>
+              <h4 style="font-family:var(--font-mono);font-size:1rem;color:#f5d742;margin:0 0 6px">⭐ 24h XP Boost</h4>
               <p style="font-family:var(--font-mono);font-size:.8rem;color:#a8c4d4;line-height:1.4;margin:0 0 10px">+50% XP gain for 24 hours</p>
               <button onclick="G.purchaseProduct('xp_boost_24h', 99)" style="font-family:var(--font-title);font-size:1.1rem;width:100%;padding:10px;background:linear-gradient(180deg,#d4a44a 0%,#b38838 100%);border:2px solid #f5d742;border-radius:6px;color:#1a1410;cursor:pointer">$0.99</button>
             </div>
             
             <div style="background:linear-gradient(145deg,rgba(76,29,149,0.2) 0%,rgba(30,27,75,0.3) 100%);border:2px solid rgba(167,139,250,0.4);border-radius:8px;padding:14px">
-              <h4 style="font-family:var(--font-mono);font-size:1rem;color:#f5d742;margin:0 0 6px">Mega Boost Bundle</h4>
-              <p style="font-family:var(--font-mono);font-size:.8rem;color:#a8c4d4;line-height:1.4;margin:0 0 10px">All 3 boosts (XP, Loot, Caps) for 24h - Save 33%!</p>
-              <button onclick="G.purchaseProduct('mega_boost_bundle', 199)" style="font-family:var(--font-title);font-size:1.1rem;width:100%;padding:10px;background:linear-gradient(180deg,#d4a44a 0%,#b38838 100%);border:2px solid #f5d742;border-radius:6px;color:#1a1410;cursor:pointer">$1.99</button>
+              <h4 style="font-family:var(--font-mono);font-size:1rem;color:#f5d742;margin:0 0 6px">💰 24h Caps Boost</h4>
+              <p style="font-family:var(--font-mono);font-size:.8rem;color:#a8c4d4;line-height:1.4;margin:0 0 10px">+50% currency drops for 24 hours</p>
+              <button onclick="G.purchaseProduct('caps_boost_24h', 99)" style="font-family:var(--font-title);font-size:1.1rem;width:100%;padding:10px;background:linear-gradient(180deg,#d4a44a 0%,#b38838 100%);border:2px solid #f5d742;border-radius:6px;color:#1a1410;cursor:pointer">$0.99</button>
+            </div>
+            
+            <div style="background:linear-gradient(145deg,rgba(76,29,149,0.2) 0%,rgba(30,27,75,0.3) 100%);border:2px solid rgba(167,139,250,0.4);border-radius:8px;padding:14px">
+              <h4 style="font-family:var(--font-mono);font-size:1rem;color:#f5d742;margin:0 0 6px">✨ 24h Loot Boost</h4>
+              <p style="font-family:var(--font-mono);font-size:.8rem;color:#a8c4d4;line-height:1.4;margin:0 0 10px">+25% loot quality for 24 hours</p>
+              <button onclick="G.purchaseProduct('loot_boost_24h', 99)" style="font-family:var(--font-title);font-size:1.1rem;width:100%;padding:10px;background:linear-gradient(180deg,#d4a44a 0%,#b38838 100%);border:2px solid #f5d742;border-radius:6px;color:#1a1410;cursor:pointer">$0.99</button>
+            </div>
+            
+            <div style="background:linear-gradient(145deg,rgba(139,92,246,0.3) 0%,rgba(59,130,246,0.2) 100%);border:3px solid #a78bfa;border-radius:8px;padding:14px;position:relative;overflow:hidden">
+              <div style="position:absolute;top:-50%;right:-20%;width:100px;height:200px;background:linear-gradient(45deg,transparent,rgba(255,255,255,0.1),transparent);transform:rotate(45deg);animation:shine 3s infinite"></div>
+              <div style="position:absolute;top:8px;right:8px;background:#ef4444;color:white;font-family:var(--font-title);font-size:.65rem;padding:3px 8px;border-radius:4px;letter-spacing:.05em">SAVE 33%</div>
+              <h4 style="font-family:var(--font-mono);font-size:1.1rem;color:#fbbf24;margin:0 0 6px">🚀 Mega Boost Bundle</h4>
+              <p style="font-family:var(--font-mono);font-size:.8rem;color:#e0e7ff;line-height:1.4;margin:0 0 10px">All 3 boosts (XP, Loot, Caps) for 24h - Best value!</p>
+              <button onclick="G.purchaseProduct('mega_boost_bundle', 199)" style="font-family:var(--font-title);font-size:1.1rem;width:100%;padding:10px;background:linear-gradient(180deg,#fbbf24 0%,#d97706 100%);border:2px solid #fcd34d;border-radius:6px;color:#1a1410;cursor:pointer;font-weight:900;box-shadow:0 4px 0 #92400e">$1.99</button>
             </div>
           </div>
         </div>
