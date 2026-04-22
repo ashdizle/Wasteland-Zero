@@ -285,43 +285,65 @@ All countries
 
 ---
 
-## 📋 IN-APP PURCHASES (Reference)
+## 📋 IN-APP PURCHASES (Apple IAP)
 
-You now have these products in your game:
+You have **5 IAP products** ready for App Store Connect:
 
 ### Premium (Non-Consumable)
 1. **Wasteland Zero Premium** - $4.99
-   - Product ID: `premium_unlock`
-   - Type: Non-Consumable
+   - Product ID: `com.wastelandzero.premium`
+   - Type: Non-Consumable (one-time purchase)
    - Benefits: Remove branding, exclusive title screen, priority support
 
 ### Individual Boosts (Consumable - 24h duration)
 2. **24h XP Boost** - $0.99
-   - Product ID: `xp_boost_24h`
+   - Product ID: `com.wastelandzero.xp_boost`
    - Type: Consumable
    - Benefits: +50% XP gain for 24 hours
 
-3. **24h Loot Boost** - $0.99
-   - Product ID: `loot_boost_24h`
-   - Type: Consumable
-   - Benefits: +25% better loot quality for 24 hours
-
-4. **24h Caps Boost** - $0.99
-   - Product ID: `caps_boost_24h`
+3. **24h Caps Boost** - $0.99
+   - Product ID: `com.wastelandzero.caps_boost`
    - Type: Consumable
    - Benefits: +50% currency drops for 24 hours
 
+4. **24h Loot Boost** - $0.99
+   - Product ID: `com.wastelandzero.loot_boost`
+   - Type: Consumable
+   - Benefits: +25% loot quality for 24 hours
+
 ### Bundle (Consumable - Best Value!)
 5. **Mega Boost Bundle** - $1.99
-   - Product ID: `mega_boost_bundle`
+   - Product ID: `com.wastelandzero.mega_bundle`
    - Type: Consumable
    - Benefits: All 3 boosts (XP, Loot, Caps) for 24h - **Save 33%!**
 
 **Total: 5 IAP products**
 
-**Important Note:** Your game currently uses Stripe for payments (perfect for web). For iOS App Store submission, Apple requires you to use Apple IAP for digital goods. You'll need to configure these same products in App Store Connect → In-App Purchases section.
+---
 
-*(Configure these in App Store Connect → Features → In-App Purchases)*
+## 🛠️ HOW TO ADD THESE TO APP STORE CONNECT
+
+### Quick Steps:
+1. Go to: https://appstoreconnect.apple.com/
+2. My Apps → Wasteland Zero → **Features** → **In-App Purchases**
+3. Click **"+"** for each product
+4. Select type (Non-Consumable or Consumable)
+5. Enter Product ID exactly as shown above
+6. Set price tier
+7. Add English description
+8. Upload screenshot of product in your app
+9. Submit for review
+
+**Detailed guide:** See `/app/IOS_IAP_SETUP_GUIDE.md`
+
+---
+
+**⚠️ IMPORTANT:** Product IDs must match EXACTLY (case-sensitive) in:
+- App Store Connect
+- Your backend code
+- Your iOS app
+
+Your backend is already configured with these product IDs!
 
 ---
 

@@ -161,7 +161,7 @@ https://wastelandzero.com/privacy
 5. **Mega Boost Bundle** - $1.99 - All 3 boosts for 24h - **Save 33%!**
 
 **All IAP are optional. The full game is playable for free.**  
-**All purchases processed securely via Stripe.**
+**All purchases processed securely via Apple In-App Purchase.**
 
 ---
 
