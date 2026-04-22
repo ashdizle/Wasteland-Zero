@@ -112,22 +112,6 @@ const Cosmetics = {
         });
       }
     }
-    
-    // Initialize Stripe if needed
-    this.initializeStripe();
-  },
-  
-  initializeStripe() {
-    if (!window.Stripe) {
-      const script = document.createElement('script');
-      script.src = 'https://js.stripe.com/v3/';
-      script.onload = () => {
-        window.stripe = Stripe('pk_live_51TKimHGz3LGNY9vIPyp45wik3GQSBGYHZvr2MtHuRK6n5yfnIoR0FDchARA1yoigv4fWOXITQUASyMWww7M7fCdw00UzT6EWXf');
-      };
-      document.head.appendChild(script);
-    } else if (!window.stripe) {
-      window.stripe = Stripe('pk_live_51TKimHGz3LGNY9vIPyp45wik3GQSBGYHZvr2MtHuRK6n5yfnIoR0FDchARA1yoigv4fWOXITQUASyMWww7M7fCdw00UzT6EWXf');
-    }
   },
   
   switchMainTab(tab) {
@@ -220,7 +204,7 @@ const Cosmetics = {
             <div style="background:linear-gradient(145deg,rgba(76,29,149,0.2) 0%,rgba(30,27,75,0.3) 100%);border:2px solid #d4a44a;border-radius:8px;padding:16px">
               <h4 style="font-family:var(--font-mono);font-size:1rem;color:#f5d742;margin:0 0 8px">Wasteland Zero Premium</h4>
               <p style="font-family:var(--font-mono);font-size:.8rem;color:#a8c4d4;line-height:1.4;margin:0 0 12px">Remove branding, exclusive title screen, priority support</p>
-              <button onclick="Cosmetics.purchaseProduct('premium_unlock', 499)" style="font-family:var(--font-title);font-size:1.1rem;width:100%;padding:10px;background:linear-gradient(180deg,#d4a44a 0%,#b38838 100%);border:2px solid #f5d742;border-radius:6px;color:#1a1410;text-shadow:1px 1px 0 rgba(255,255,255,0.3);box-shadow:0 3px 0 #8b6b2c;cursor:pointer;letter-spacing:.05em">$4.99</button>
+              <button onclick="Cosmetics.purchaseProduct('com.wastelandzero.premium', 499)" style="font-family:var(--font-title);font-size:1.1rem;width:100%;padding:10px;background:linear-gradient(180deg,#d4a44a 0%,#b38838 100%);border:2px solid #f5d742;border-radius:6px;color:#1a1410;text-shadow:1px 1px 0 rgba(255,255,255,0.3);box-shadow:0 3px 0 #8b6b2c;cursor:pointer;letter-spacing:.05em">$4.99</button>
             </div>
           </div>
           
@@ -232,19 +216,19 @@ const Cosmetics = {
               <div style="background:linear-gradient(145deg,rgba(76,29,149,0.2) 0%,rgba(30,27,75,0.3) 100%);border:2px solid rgba(167,139,250,0.4);border-radius:8px;padding:14px">
                 <h4 style="font-family:var(--font-mono);font-size:1rem;color:#f5d742;margin:0 0 6px">⭐ 24h XP Boost</h4>
                 <p style="font-family:var(--font-mono);font-size:.8rem;color:#a8c4d4;line-height:1.4;margin:0 0 10px">+50% XP gain for 24 hours</p>
-                <button onclick="Cosmetics.purchaseProduct('xp_boost_24h', 99)" style="font-family:var(--font-title);font-size:1.1rem;width:100%;padding:10px;background:linear-gradient(180deg,#d4a44a 0%,#b38838 100%);border:2px solid #f5d742;border-radius:6px;color:#1a1410;cursor:pointer">$0.99</button>
+                <button onclick="Cosmetics.purchaseProduct('com.wastelandzero.xp_boost', 99)" style="font-family:var(--font-title);font-size:1.1rem;width:100%;padding:10px;background:linear-gradient(180deg,#d4a44a 0%,#b38838 100%);border:2px solid #f5d742;border-radius:6px;color:#1a1410;cursor:pointer">$0.99</button>
               </div>
               
               <div style="background:linear-gradient(145deg,rgba(76,29,149,0.2) 0%,rgba(30,27,75,0.3) 100%);border:2px solid rgba(167,139,250,0.4);border-radius:8px;padding:14px">
                 <h4 style="font-family:var(--font-mono);font-size:1rem;color:#f5d742;margin:0 0 6px">💰 24h Caps Boost</h4>
                 <p style="font-family:var(--font-mono);font-size:.8rem;color:#a8c4d4;line-height:1.4;margin:0 0 10px">+50% currency drops for 24 hours</p>
-                <button onclick="Cosmetics.purchaseProduct('caps_boost_24h', 99)" style="font-family:var(--font-title);font-size:1.1rem;width:100%;padding:10px;background:linear-gradient(180deg,#d4a44a 0%,#b38838 100%);border:2px solid #f5d742;border-radius:6px;color:#1a1410;cursor:pointer">$0.99</button>
+                <button onclick="Cosmetics.purchaseProduct('com.wastelandzero.caps_boost', 99)" style="font-family:var(--font-title);font-size:1.1rem;width:100%;padding:10px;background:linear-gradient(180deg,#d4a44a 0%,#b38838 100%);border:2px solid #f5d742;border-radius:6px;color:#1a1410;cursor:pointer">$0.99</button>
               </div>
               
               <div style="background:linear-gradient(145deg,rgba(76,29,149,0.2) 0%,rgba(30,27,75,0.3) 100%);border:2px solid rgba(167,139,250,0.4);border-radius:8px;padding:14px">
                 <h4 style="font-family:var(--font-mono);font-size:1rem;color:#f5d742;margin:0 0 6px">✨ 24h Loot Boost</h4>
                 <p style="font-family:var(--font-mono);font-size:.8rem;color:#a8c4d4;line-height:1.4;margin:0 0 10px">+25% loot quality for 24 hours</p>
-                <button onclick="Cosmetics.purchaseProduct('loot_boost_24h', 99)" style="font-family:var(--font-title);font-size:1.1rem;width:100%;padding:10px;background:linear-gradient(180deg,#d4a44a 0%,#b38838 100%);border:2px solid #f5d742;border-radius:6px;color:#1a1410;cursor:pointer">$0.99</button>
+                <button onclick="Cosmetics.purchaseProduct('com.wastelandzero.loot_boost', 99)" style="font-family:var(--font-title);font-size:1.1rem;width:100%;padding:10px;background:linear-gradient(180deg,#d4a44a 0%,#b38838 100%);border:2px solid #f5d742;border-radius:6px;color:#1a1410;cursor:pointer">$0.99</button>
               </div>
               
               <div style="background:linear-gradient(145deg,rgba(139,92,246,0.3) 0%,rgba(59,130,246,0.2) 100%);border:3px solid #a78bfa;border-radius:8px;padding:14px;position:relative;overflow:hidden">
@@ -252,7 +236,7 @@ const Cosmetics = {
                 <div style="position:absolute;top:8px;right:8px;background:#ef4444;color:white;font-family:var(--font-title);font-size:.65rem;padding:3px 8px;border-radius:4px;letter-spacing:.05em">SAVE 33%</div>
                 <h4 style="font-family:var(--font-mono);font-size:1.1rem;color:#fbbf24;margin:0 0 6px">🚀 Mega Boost Bundle</h4>
                 <p style="font-family:var(--font-mono);font-size:.8rem;color:#e0e7ff;line-height:1.4;margin:0 0 10px">All 3 boosts (XP, Loot, Caps) for 24h - Best value!</p>
-                <button onclick="Cosmetics.purchaseProduct('mega_boost_bundle', 199)" style="font-family:var(--font-title);font-size:1.1rem;width:100%;padding:10px;background:linear-gradient(180deg,#fbbf24 0%,#d97706 100%);border:2px solid #fcd34d;border-radius:6px;color:#1a1410;cursor:pointer;font-weight:900;box-shadow:0 4px 0 #92400e">$1.99</button>
+                <button onclick="Cosmetics.purchaseProduct('com.wastelandzero.mega_bundle', 199)" style="font-family:var(--font-title);font-size:1.1rem;width:100%;padding:10px;background:linear-gradient(180deg,#fbbf24 0%,#d97706 100%);border:2px solid #fcd34d;border-radius:6px;color:#1a1410;cursor:pointer;font-weight:900;box-shadow:0 4px 0 #92400e">$1.99</button>
               </div>
             </div>
           </div>
@@ -260,9 +244,9 @@ const Cosmetics = {
           <!-- Info -->
           <div style="margin-top:12px;padding:16px;background:rgba(61,41,20,0.3);border-radius:8px;border:1px solid #5d4428">
             <p style="font-family:var(--font-mono);font-size:.75rem;color:#a8c4d4;text-align:center;line-height:1.5;margin:0">
-              💳 All purchases are secure via Stripe<br>
-              💰 <strong style="color:#4ade80">LIVE MODE</strong> - Real payments enabled!<br>
-              🚀 Support development & unlock exclusive content!
+              🍎 All purchases through Apple In-App Purchase<br>
+              🔒 Secure payment via App Store<br>
+              💎 Support development & unlock exclusive content!
             </p>
           </div>
         </div>
@@ -271,46 +255,30 @@ const Cosmetics = {
   },
   
   async purchaseProduct(productId, priceInCents) {
-    const userId = `slot_${G.currentSlot || 1}`;
-    const apiUrl = window.location.origin;
-    
-    if (!window.stripe) {
-      G.toast('Loading payment system...', 2000);
-      this.initializeStripe();
-      setTimeout(() => this.purchaseProduct(productId, priceInCents), 1000);
-      return;
-    }
-    
-    G.toast('Opening checkout...', 2000);
-    
-    try {
-      const response = await fetch(`${apiUrl}/api/payments/create-checkout`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          product_id: productId,
-          user_id: userId,
-          success_url: `${window.location.origin}/game.html?purchase=success`,
-          cancel_url: `${window.location.origin}/game.html?purchase=cancelled`
-        })
-      });
+    // Check if running on iOS (Capacitor)
+    if (window.Capacitor && window.Capacitor.getPlatform() === 'ios') {
+      // iOS In-App Purchase flow
+      G.toast('Opening App Store...', 2000);
       
-      const data = await response.json();
-      
-      if (data.session_id && window.stripe) {
-        const result = await window.stripe.redirectToCheckout({
-          sessionId: data.session_id
-        });
+      try {
+        // This will be handled by native iOS StoreKit
+        // The iOS app needs to implement the IAP logic
+        G.toast('⚠️ IAP not yet implemented in iOS build', 3000);
         
-        if (result.error) {
-          G.toast(`Error: ${result.error.message}`, 3000);
-        }
-      } else {
-        G.toast('Failed to create checkout session', 3000);
+        // TODO: When iOS app is built with StoreKit:
+        // 1. Call native iOS code to initiate purchase
+        // 2. Wait for purchase completion
+        // 3. Send receipt to backend for verification
+        // 4. Grant benefits to user
+        
+      } catch (error) {
+        G.toast('Purchase failed', 2000);
+        console.error('IAP error:', error);
       }
-    } catch (error) {
-      console.error('Purchase error:', error);
-      G.toast('Purchase failed - please try again', 3000);
+    } else {
+      // Web version - show message
+      G.toast('💡 In-App Purchases only available in iOS app', 3000);
+      console.log('Purchase attempted:', productId, '$' + (priceInCents / 100));
     }
   },
 

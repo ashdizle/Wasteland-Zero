@@ -19,29 +19,35 @@ class IAPVerifyResponse(BaseModel):
 
 # Apple IAP Product IDs (must match App Store Connect)
 PRODUCTS = {
-    "com.wastelandzero.app.radiation_pack": {
-        "name": "Radiation Pack",
+    "com.wastelandzero.premium": {
+        "name": "Wasteland Zero Premium",
         "price": 4.99,
-        "caps": 0,
-        "items": {"rad_protection": 250, "radaway": 5}
+        "type": "non_consumable",
+        "benefits": ["no_branding", "exclusive_title", "priority_support"]
     },
-    "com.wastelandzero.app.survival_kit": {
-        "name": "Survival Kit",
-        "price": 9.99,
-        "caps": 1000,
-        "items": {"stimpak": 10, "ammo": 500}
+    "com.wastelandzero.xp_boost": {
+        "name": "24h XP Boost",
+        "price": 0.99,
+        "type": "consumable",
+        "benefits": ["xp_boost_24h"]
     },
-    "com.wastelandzero.app.boss_slayer": {
-        "name": "Boss Slayer Bundle",
-        "price": 14.99,
-        "caps": 2000,
-        "items": {"legendary_weapon": 1, "boss_tracker": 1}
+    "com.wastelandzero.caps_boost": {
+        "name": "24h Caps Boost",
+        "price": 0.99,
+        "type": "consumable",
+        "benefits": ["caps_boost_24h"]
     },
-    "com.wastelandzero.app.ultimate_pack": {
-        "name": "Ultimate Wasteland Pack",
-        "price": 24.99,
-        "caps": 5000,
-        "items": {"exclusive_skin": 1, "all_items": 1}
+    "com.wastelandzero.loot_boost": {
+        "name": "24h Loot Boost",
+        "price": 0.99,
+        "type": "consumable",
+        "benefits": ["loot_boost_24h"]
+    },
+    "com.wastelandzero.mega_bundle": {
+        "name": "Mega Boost Bundle",
+        "price": 1.99,
+        "type": "consumable",
+        "benefits": ["xp_boost_24h", "caps_boost_24h", "loot_boost_24h"]
     }
 }
 
@@ -57,8 +63,8 @@ async def get_products():
                 "id": product_id,
                 "name": product["name"],
                 "price": product["price"],
-                "caps": product["caps"],
-                "items": product["items"]
+                "type": product["type"],
+                "benefits": product["benefits"]
             }
             for product_id, product in PRODUCTS.items()
         ]
