@@ -140,7 +140,7 @@ https://wastelandzero.com/privacy
 **Secondary:** Games > Strategy
 
 ## Age Rating
-**12+** (Infrequent/Mild Cartoon or Fantasy Violence)
+**13+** (Infrequent/Mild Cartoon or Fantasy Violence)
 
 ## Price
 **FREE** (with optional IAP for cosmetics)
