@@ -2993,7 +2993,8 @@ const G = {
   showLoot(danger, forcedTier) {
     danger = danger || 1;
     const s = this.state;
-    let count = 1 + Math.floor(Math.random() * 3);
+    // SCALED DOWN FOR APP STORE (50% reduction)
+    let count = 1 + Math.floor(Math.random() * 1.5);  // was 1-3, now 1-2.5
     if (this.hasSkill('scavmaster')) count++;
     if (this.hasSkill('hoarder')) count += 2;
     if (this.getAmuletBonus('loot')) count += this.getAmuletBonus('loot');
