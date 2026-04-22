@@ -287,13 +287,26 @@ All countries
 
 ## 📋 IN-APP PURCHASES (Reference)
 
-You already have these in your game:
+You have these in your game:
 
-1. **Small Gem Pack** - $0.99 - 100 Gems
-2. **Medium Gem Pack** - $4.99 - 600 Gems
-3. **Large Gem Pack** - $9.99 - 1,500 Gems
-4. **24h XP Boost** - $0.99
-5. **24h Loot Boost** - $0.99
+### Premium
+1. **Wasteland Zero Premium** - $4.99
+   - Product ID: `premium_unlock`
+   - Type: Non-Consumable
+   - Benefits: Remove branding, exclusive title screen, priority support
+
+### Boosts (Consumable)
+2. **24h XP Boost** - $0.99
+   - Product ID: `xp_boost_24h`
+   - Type: Consumable
+   - Benefits: +50% XP gain for 24 hours
+
+3. **Mega Boost Bundle** - $1.99
+   - Product ID: `mega_boost_bundle`
+   - Type: Consumable
+   - Benefits: All 3 boosts (XP, Loot, Caps) for 24h - Save 33%!
+
+**Note:** Your game uses Stripe for payments, which is perfect for web/cross-platform. For iOS App Store, you'll need to integrate Apple IAP for these same products (Apple requires this for digital goods sold in iOS apps).
 
 *(Configure these in App Store Connect → Features → In-App Purchases)*
 
