@@ -1,7 +1,7 @@
 // ─── RACES ───
 const RACES=[
   {id:'human',   name:'HUMAN',   icon:'👤', desc:'Adaptable and resilient. Balanced stats, extra starting caps, bonus SP at milestones.',
-   bonus:{allStats:2, maxHp:15, startCaps:50}},
+   bonus:{allStats:2, maxHp:15, startCaps:25}},  // was 50 caps
   {id:'ghoul',   name:'GHOUL',   icon:'💀', desc:'Irradiated near-dead. Incredible toughness and rad-resistance, but mentally impaired.',
    bonus:{str:3, end:4, maxHp:50, radResist:.75, int:-2}},
   {id:'mutant',  name:'MUTANT',  icon:'☢',  desc:'Super Mutant. Enormous raw power and massive HP pool, but slow and dim-witted.',

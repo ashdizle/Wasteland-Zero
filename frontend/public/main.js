@@ -2668,20 +2668,20 @@ const G = {
     if (actionsEl) actionsEl.classList.add('locked');
 
     AudioEngine.stop();
-    // Sum XP + caps across ALL enemies in squad
+    // Sum XP + caps across ALL enemies in squad (SCALED DOWN 60% FOR APP STORE)
     let capGain = 0;
     let xpGain = 0;
     allEnemies.forEach(en => {
       let mult = 1;
-      if (en.isBoss) mult = 3.0;
-      else if (en.isMini) mult = 2.0;
-      else if (en.elite) mult = 1.5;
-      let ec = en.caps || 10;
+      if (en.isBoss) mult = 1.5;  // was 3.0
+      else if (en.isMini) mult = 1.2;  // was 2.0
+      else if (en.elite) mult = 1.15;  // was 1.5
+      let ec = Math.round((en.caps || 10) * 0.4);  // 60% reduction in base caps
       if (this.hasSkill('looter')) ec = Math.round(ec * 1.3);
       if (this.hasSkill('scrounger')) ec = Math.round(ec * 1.25);
       if (en.elite && this.hasSkill('capitalist')) ec = Math.round(ec * 1.6);
       capGain += ec;
-      xpGain += Math.round((en.xp || 50) * mult);
+      xpGain += Math.round((en.xp || 50) * mult * 0.35);  // 65% reduction in XP
     });
     s.caps += capGain;
     if (allEnemies.length > 1) {
@@ -5039,10 +5039,11 @@ const G = {
     if (s.lv >= 100) return; // hard cap at level 100
     s.lv++;
     s.xp -= s.xpNext;
-    // DRAMATICALLY SLOWER XP curve: each level costs 500 + level×150 XP (was 300 + level×80)
-    // Level 10 = 2,000 XP, Level 50 = 8,000 XP, Level 100 = 15,500 XP
-    s.xpNext = 500 + s.lv * 150;
-    s.maxHp += 12; s.hp = Math.min(s.maxHp, s.hp + 12);
+    // MUCH SLOWER XP curve for App Store (makes XP Boost IAP valuable)
+    // Level 10 = 3,500 XP, Level 50 = 13,500 XP, Level 100 = 25,500 XP
+    s.xpNext = 800 + s.lv * 250;  // was 500 + lv×150
+    s.maxHp += 8;  // was +12 (reduced to slow power creep)
+    s.hp = Math.min(s.maxHp, s.hp + 8);
     s.str++; s.agi++; s.int++; s.end++; s.lck++;
     s.skillPoints = (s.skillPoints || 0) + 1;
     if (s.lv >= 10) this.unlockAchievement('lv10');
@@ -5067,7 +5068,7 @@ const G = {
   showLevelUp(choices, masteryChoices) {
     const s = this.state;
     document.getElementById('lu-info').innerHTML =
-      `⬆ LEVEL ${s.lv} — HP +12 | All Stats +1<br>Skill Points: <span style="color:var(--amber)">${s.skillPoints} SP</span> (spend in Skills tab)<br><span style="color:#aaddaa;font-size:.72em">Choose a power upgrade:</span>`;
+      `⬆ LEVEL ${s.lv} — HP +8 | All Stats +1<br>Skill Points: <span style="color:var(--amber)">${s.skillPoints} SP</span> (spend in Skills tab)<br><span style="color:#aaddaa;font-size:.72em">Choose a power upgrade:</span>`;
     const el = document.getElementById('lu-perks');
     el.innerHTML = choices.map(p => `
       <button class="lu-perk-btn" onclick="G.pickLevelPerk('${p.id}')">
