@@ -271,7 +271,7 @@ All countries
 
 ## 🔞 AGE RATING
 
-**Rating:** 12+  
+**Rating:** 13+  
 **Reason:** Infrequent/Mild Cartoon or Fantasy Violence
 
 **Questionnaire answers:**
