@@ -6968,12 +6968,21 @@ G.updateBoostIndicator = function() {
   }
 };
 
-// Update boost indicator periodically
-setInterval(() => {
-  if (typeof Store !== 'undefined' && G.state && G.state.screen !== 'start') {
-    G.updateBoostIndicator();
-  }
-}, 5000);
+// Update boost indicator periodically (ONLY when game is active, not on start screen)
+let boostUpdateInterval = null;
+function startBoostUpdates() {
+  if (boostUpdateInterval) return; // Already running
+  boostUpdateInterval = setInterval(() => {
+    if (typeof Store !== 'undefined' && G.state && G.state.screen !== 'start') {
+      G.updateBoostIndicator();
+    }
+  }, 10000); // Reduced from 5s to 10s to reduce strain on iPad
+}
+
+// Start boost updates only after game starts
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(startBoostUpdates, 3000);
+});
 
 // Remove Emergent badge if premium purchased
 if (typeof Store !== 'undefined' && Store.hasActiveBenefit && Store.hasActiveBenefit('no_branding')) {
