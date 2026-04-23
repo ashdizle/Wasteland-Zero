@@ -674,6 +674,29 @@ button,a,.tile,.dpad-btn,.nav-tab,.btn,.arch-card,.bag-item,.skill-node,.vats-ta
 /* Raise touch targets: small utility buttons to 40px minimum */
 .slot-btn { min-height:36px; padding:4px 8px; font-size:.6rem }
 .shop-buy-btn { min-height:44px; padding:7px 16px; font-size:.9rem }
+
+/* ═══ iPad FIXES FOR APPLE REVIEW ═══ */
+/* Fix Guideline 4 - Design: Text cutoff and crowded UI on iPad Air 11-inch */
+@media (min-width: 768px) and (max-width: 1200px) {
+  body { font-size: 15px; line-height: 1.6; }
+  .screen { padding: 20px 24px 100px; }
+  .modal-content, .shop-modal-content { max-width: 95%; padding: 20px; }
+  .loot-item-name { font-size: .9rem; word-wrap: break-word; max-width: 100%; }
+  .cu-title { font-size: 2rem; }
+  p, .desc { font-size: .9rem; line-height: 1.6; }
+  .slot-card { padding: 14px; }
+  .inv-item-name { font-size: .85rem; }
+}
+
+/* Fix Guideline 2.1a - Performance: Reduce animations on iPad to prevent flickering */
+@media (hover: none) and (pointer: coarse) {
+  @keyframes gpulse{0%,100%{text-shadow:0 0 6px var(--green)}50%{text-shadow:0 0 10px var(--green)}}
+  @keyframes rpulse{0%,100%{text-shadow:0 0 6px var(--red)}50%{text-shadow:0 0 10px var(--red)}}
+  @keyframes barrelGlow{0%,100%{filter:drop-shadow(0 0 8px rgba(74,222,128,.6))}50%{filter:drop-shadow(0 0 12px rgba(74,222,128,.7))}}
+  .title-dagger { animation: none !important; transform: rotate(0deg); }
+  @keyframes terrpulse{0%,100%{box-shadow:0 0 4px rgba(255,200,50,.3)}50%{box-shadow:0 0 8px rgba(255,200,50,.6)}}
+}
+
 .skill-unlock-btn { min-height:40px; padding:6px 12px }
 .aoe-btn { min-height:40px }
 .guide-close-btn { min-height:40px; padding:6px 16px }
